@@ -20,6 +20,7 @@
   },
   "dependencies": {
     "cycle-react": "^4.0.0",
+    "immutable": "^3.8.1",
     "react": "^15.2.1",
     "react-dom": "^15.2.1",
     "rx": "^4.1.0"
