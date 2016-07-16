@@ -12,6 +12,17 @@ const inc = () => inc$.onNext()
 const dec$ = new Subject()
 const dec = () => dec$.onNext()
 
+const handleEvent = ({eventType, payload}) => {
+  switch(eventType) {
+    case 'inc':
+      inc()
+      break
+    case 'dec':
+      dec()
+      break
+  }
+}
+
 const store = Observable.merge(
   inc$.map(() => model => model + 1),
   dec$.map(() => model => model - 1)
@@ -25,7 +36,6 @@ store.subscribe(store => {
   ReactDOM.render(
     <App
       store={store}
-      onInc={inc}
-      onDec={dec}
+      onEvent={handleEvent}
     />, rootEl)
 })
