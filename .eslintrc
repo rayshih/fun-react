@@ -1,6 +1,15 @@
 {
   "parser": "babel-eslint",
+  "plugins": [
+    "react"
+  ],
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true
+    }
+  }
   "rules": {
-    "semi": ["warn", "never"]
+    "semi": ["warn", "never"],
+    "no-unused-vars": ["warn"]
   }
 }
