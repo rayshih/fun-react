@@ -1,19 +1,37 @@
 import React from 'react'
-import {component} from './fun'
+import {component, createUpdate} from './fun'
+import Counter, * as CM from './Counter'
+// CM stand for Counter module
 
-const Counter = component('Counter', (event, props) => {
-  return props.get('store').map(store => (
-    <div>
-      <h1>Counter: {store}</h1>
-      <button onClick={event('inc')}>INC</button>
-      <button onClick={event('dec')}>DEC</button>
-    </div>
-  ))
+const Msg = {
+  TOP: 'TOP',
+  BOTTOM: 'BOTTOM'
+}
+
+export const init = (top, bottom) => ({
+  topCounter: CM.init(top),
+  bottomCounter: CM.init(top)
+})
+
+// TODO consider use immutable js?
+export const update = createUpdate({
+  [Msg.TOP]: (msg, model) => ({
+    ...model, topCounter: CM.update(msg, model.topCounter)
+  }),
+  [Msg.BOTTOM]: (msg, model) => ({
+    ...model, bottomCounter: CM.update(msg, model.bottomCounter)
+  })
 })
 
 export default component('App', (event, props) => {
-  const {link} = event
-  return props.get('store').map(store => (
-    link(<Counter store={store} />)
+  return props.get('model').map(({topCounter, bottomCounter}) => (
+    <div>
+      <div>
+        {event.map(Msg.TOP, <Counter count={topCounter} />)}
+      </div>
+      <div>
+        {event.map(Msg.BOTTOM, <Counter count={bottomCounter} />)}
+      </div>
+    </div>
   ))
 })
