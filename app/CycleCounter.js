@@ -6,7 +6,7 @@ import {Msg} from './Counter'
 // You can just replace the Cycle.component to Fun.component
 // every thing just work
 // and you can mix cycle and fun together
-export default component('Counter', (interaction, props) => {
+export default component('CycleCounter', (interaction, props) => {
   const view = props.get('count').map(count => (
     <div>
       <h1>Count: {count}</h1>
