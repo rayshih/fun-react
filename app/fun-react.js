@@ -82,15 +82,27 @@ export const component = (componentName, defFn, componentOptions) => {
     registerEvent.listener = interaction.listener
 
     const mapEvent = (mapper, element) => {
-      const _mapper = typeof mapper === 'function'
-        ? mapper
-        : evt => mapper[evt.eventType](evt.payload)
-
       return React.cloneElement(element, {
         onEvent: event => {
-          sendEvent(_mapper(event))
+          sendEvent(mapper(event))
         }
       })
+    }
+
+    const mapEventWithObj = (obj, element) => {
+      const otherwise = obj._otherwise
+      const mapper = evt => {
+        const fn = obj[evt.eventType]
+        if (fn) {
+          return fn(evt.payload)
+        }
+
+        if (otherwise) {
+          return otherwise(evt)
+        }
+      }
+
+      return mapEvent(mapper, element)
     }
 
     const mapOrdinaryEvent = (eventMap, element) => {
@@ -101,6 +113,7 @@ export const component = (componentName, defFn, componentOptions) => {
     const linkEvent = element => mapEvent(id, element)
 
     registerEvent.map = mapEvent
+    registerEvent.mapWithObj = mapEventWithObj
     registerEvent.link = linkEvent
     registerEvent.mapOrdinary = mapOrdinaryEvent
 
