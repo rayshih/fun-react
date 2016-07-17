@@ -5,6 +5,7 @@ import {
   component,
 } from './fun-react'
 
+import OrdinaryCounter from './OrdinaryCounter'
 import Counter, * as CM from './Counter'
 // CM stand for Counter module
 
@@ -25,6 +26,8 @@ export const update = createUpdate({
   })
 })
 
+const compose = (f, g) => x => f(g(x))
+
 export default component('App', (event, props) => {
   return props.get('model').map(({topCounter, bottomCounter}) => (
     <div>
@@ -32,7 +35,10 @@ export default component('App', (event, props) => {
         {event.map(Msg.TOP, <Counter count={topCounter} />)}
       </div>
       <div>
-        {event.map(Msg.BOTTOM, <Counter count={bottomCounter} />)}
+        {event.mapOrdinary({
+          onIncClick: compose(Msg.BOTTOM, CM.Msg.INC),
+          onDecClick: compose(Msg.BOTTOM, CM.Msg.DEC),
+        }, <OrdinaryCounter count={bottomCounter} />)}
       </div>
     </div>
   ))
