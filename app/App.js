@@ -3,8 +3,10 @@ import {
   createEventTypes,
   createUpdate,
   component,
+  bridge,
 } from './fun-react'
 
+import OrdinaryCounter from './OrdinaryCounter'
 import Counter, * as CM from './Counter'
 // CM stand for Counter module
 
@@ -32,7 +34,22 @@ export default component('App', (event, props) => {
         {event.map(Msg.TOP, <Counter count={topCounter} />)}
       </div>
       <div>
-        {event.map(Msg.BOTTOM, <Counter count={bottomCounter} />)}
+        {event.map(
+          (evt) => {
+            if (evt.eventType === 'onIncClick') {
+              return Msg.BOTTOM(CM.Msg.INC(evt.payload))
+            }
+
+            if (evt.eventType === 'onDecClick') {
+              return Msg.BOTTOM(CM.Msg.DEC(evt.payload))
+            }
+          },
+          bridge(
+            <OrdinaryCounter count={bottomCounter} />,
+            'onIncClick',
+            'onDecClick'
+          )
+        )}
       </div>
     </div>
   ))

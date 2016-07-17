@@ -5,7 +5,7 @@ import {
   component,
 } from './fun-react'
 
-const Msg = createEventTypes('INC', 'DEC')
+export const Msg = createEventTypes('INC', 'DEC')
 
 export const init = count => count
 
