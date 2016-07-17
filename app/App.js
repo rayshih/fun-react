@@ -1,16 +1,18 @@
 import React from 'react'
-import {component, createUpdate} from './fun'
+import {
+  createEventTypes,
+  createUpdate,
+  component,
+} from './fun-react'
+
 import Counter, * as CM from './Counter'
 // CM stand for Counter module
 
-const Msg = {
-  TOP: 'TOP',
-  BOTTOM: 'BOTTOM'
-}
+const Msg = createEventTypes('TOP', 'BOTTOM')
 
 export const init = (top, bottom) => ({
   topCounter: CM.init(top),
-  bottomCounter: CM.init(top)
+  bottomCounter: CM.init(bottom)
 })
 
 // TODO consider use immutable js?

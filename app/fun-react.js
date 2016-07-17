@@ -6,6 +6,21 @@ import {Observable, Subject} from 'rx'
 // util functions
 const id = a => a
 
+export const createEventTypes = (...typeNames) => (
+  typeNames.reduce((r, n) => {
+    const ctor = payload => ({
+      eventType: n,
+      payload
+    })
+
+    ctor.typeName = n
+    ctor.toString = () => n
+
+    r[n] = ctor
+    return r
+  }, {})
+)
+
 export const createUpdate = updateMap => (msg, model) => (
   updateMap[msg.eventType](msg.payload, model)
 )
@@ -21,23 +36,20 @@ export const component = (componentName, defFn, componentOptions) => {
 
     // register function
     const registerEvent = eventType => {
-      if (!eventTypes.includes(eventType)) {
-        eventTypes.push(eventType)
+      // eventTypeName
+      const etn = eventType.typeName
+      if (!eventTypes.includes(etn)) {
+        eventTypes.push(etn)
 
-        interaction.get(eventType).subscribe(payload => {
-          sendEvent({eventType, payload})
+        interaction.get(etn).subscribe(payload => {
+          sendEvent({eventType: etn, payload})
         })
       }
 
-      return interaction.listener(eventType)
+      return interaction.listener(etn)
     }
 
     const mapEvent = (mapper, element) => {
-      if (typeof mapper === 'string') {
-        const eventType = mapper
-        mapper = event => ({eventType, payload: event})
-      }
-
       return React.cloneElement(element, {
         onEvent: event => {
           sendEvent(mapper(event))

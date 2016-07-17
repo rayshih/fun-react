@@ -1,10 +1,11 @@
 import React from 'react'
-import {component, createUpdate} from './fun'
+import {
+  createEventTypes,
+  createUpdate,
+  component,
+} from './fun-react'
 
-const Msg = {
-  INC: 'INC',
-  DEC: 'DEC'
-}
+const Msg = createEventTypes('INC', 'DEC')
 
 export const init = count => count
 
