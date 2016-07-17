@@ -6,13 +6,15 @@ import {
 } from './fun-react'
 
 import OrdinaryCounter from './OrdinaryCounter'
+import CycleCounter from './CycleCounter'
 import Counter, * as CM from './Counter'
 // CM stand for Counter module
 
-const Msg = createEventTypes('TOP', 'BOTTOM')
+const Msg = createEventTypes('TOP', 'MIDDLE', 'BOTTOM')
 
-export const init = (top, bottom) => ({
+export const init = (top, middle, bottom) => ({
   topCounter: CM.init(top),
+  middleCounter: CM.init(middle),
   bottomCounter: CM.init(bottom)
 })
 
@@ -20,6 +22,9 @@ export const init = (top, bottom) => ({
 export const update = createUpdate({
   [Msg.TOP]: (msg, model) => ({
     ...model, topCounter: CM.update(msg, model.topCounter)
+  }),
+  [Msg.MIDDLE]: (msg, model) => ({
+    ...model, middleCounter: CM.update(msg, model.middleCounter)
   }),
   [Msg.BOTTOM]: (msg, model) => ({
     ...model, bottomCounter: CM.update(msg, model.bottomCounter)
@@ -29,10 +34,16 @@ export const update = createUpdate({
 const compose = (f, g) => x => f(g(x))
 
 export default component('App', (event, props) => {
-  return props.get('model').map(({topCounter, bottomCounter}) => (
+  return props.get('model').map(({topCounter, middleCounter, bottomCounter}) => (
     <div>
       <div>
         {event.map(Msg.TOP, <Counter count={topCounter} />)}
+      </div>
+      <div>
+        {event.mapWithObj({
+          onIncClick: compose(Msg.MIDDLE, CM.Msg.INC),
+          _otherwise: Msg.MIDDLE
+        }, <CycleCounter count={middleCounter} />)}
       </div>
       <div>
         {event.mapOrdinary({

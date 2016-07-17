@@ -59,20 +59,27 @@ export const component = (componentName, defFn, componentOptions) => {
       event$.onNext(event)
     }
 
+    const forwardEvent = (eventType, evt$) => (
+      evt$.subscribe(payload => {
+        sendEvent({eventType, payload})
+      })
+    )
+
     // register function
     const registerEvent = eventType => {
       // eventTypeName
       const etn = eventType.typeName
       if (!eventTypes.includes(etn)) {
         eventTypes.push(etn)
-
-        interaction.get(etn).subscribe(payload => {
-          sendEvent({eventType: etn, payload})
-        })
+        forwardEvent(etn, interaction.get(etn))
       }
 
       return interaction.listener(etn)
     }
+
+    // cycle compatible
+    registerEvent.get = interaction.get
+    registerEvent.listener = interaction.listener
 
     const mapEvent = (mapper, element) => {
       return React.cloneElement(element, {
@@ -80,6 +87,22 @@ export const component = (componentName, defFn, componentOptions) => {
           sendEvent(mapper(event))
         }
       })
+    }
+
+    const mapEventWithObj = (obj, element) => {
+      const otherwise = obj._otherwise
+      const mapper = evt => {
+        const fn = obj[evt.eventType]
+        if (fn) {
+          return fn(evt.payload)
+        }
+
+        if (otherwise) {
+          return otherwise(evt)
+        }
+      }
+
+      return mapEvent(mapper, element)
     }
 
     const mapOrdinaryEvent = (eventMap, element) => {
@@ -90,11 +113,19 @@ export const component = (componentName, defFn, componentOptions) => {
     const linkEvent = element => mapEvent(id, element)
 
     registerEvent.map = mapEvent
+    registerEvent.mapWithObj = mapEventWithObj
     registerEvent.link = linkEvent
     registerEvent.mapOrdinary = mapOrdinaryEvent
 
-    // only allow view
-    const view = defFn(registerEvent, props, self, lifecycles)
+    const cycleDef = defFn(registerEvent, props, self, lifecycles)
+    const {view, events: cycleEvents} = cycleDef.view
+      ? cycleDef
+      : {view: cycleDef, events: {}}
+
+    Object.keys(cycleEvents).forEach(eventType => {
+      const obs$ = cycleEvents[eventType]
+      forwardEvent(eventType, obs$)
+    })
 
     return {
       view,
