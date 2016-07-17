@@ -109,9 +109,7 @@ export const component = (componentName, defFn, componentOptions) => {
       ? cycleDef
       : {view: cycleDef, events: {}}
 
-    console.log('cycleEvents', componentName, cycleEvents);
     Object.keys(cycleEvents).forEach(eventType => {
-      console.log('cycleEvents', cycleEvents);
       const obs$ = cycleEvents[eventType]
       forwardEvent(eventType, obs$)
     })
