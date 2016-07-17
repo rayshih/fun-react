@@ -59,25 +59,36 @@ export const component = (componentName, defFn, componentOptions) => {
       event$.onNext(event)
     }
 
+    const forwardEvent = (eventType, evt$) => (
+      evt$.subscribe(payload => {
+        sendEvent({eventType, payload})
+      })
+    )
+
     // register function
     const registerEvent = eventType => {
       // eventTypeName
       const etn = eventType.typeName
       if (!eventTypes.includes(etn)) {
         eventTypes.push(etn)
-
-        interaction.get(etn).subscribe(payload => {
-          sendEvent({eventType: etn, payload})
-        })
+        forwardEvent(etn, interaction.get(etn))
       }
 
       return interaction.listener(etn)
     }
 
+    // cycle compatible
+    registerEvent.get = interaction.get
+    registerEvent.listener = interaction.listener
+
     const mapEvent = (mapper, element) => {
+      const _mapper = typeof mapper === 'function'
+        ? mapper
+        : evt => mapper[evt.eventType](evt.payload)
+
       return React.cloneElement(element, {
         onEvent: event => {
-          sendEvent(mapper(event))
+          sendEvent(_mapper(event))
         }
       })
     }
@@ -93,8 +104,17 @@ export const component = (componentName, defFn, componentOptions) => {
     registerEvent.link = linkEvent
     registerEvent.mapOrdinary = mapOrdinaryEvent
 
-    // only allow view
-    const view = defFn(registerEvent, props, self, lifecycles)
+    const cycleDef = defFn(registerEvent, props, self, lifecycles)
+    const {view, events: cycleEvents} = cycleDef.view
+      ? cycleDef
+      : {view: cycleDef, events: {}}
+
+    console.log('cycleEvents', componentName, cycleEvents);
+    Object.keys(cycleEvents).forEach(eventType => {
+      console.log('cycleEvents', cycleEvents);
+      const obs$ = cycleEvents[eventType]
+      forwardEvent(eventType, obs$)
+    })
 
     return {
       view,
