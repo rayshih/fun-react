@@ -3,7 +3,6 @@ import {
   createEventTypes,
   createUpdate,
   component,
-  bridge,
 } from './fun-react'
 
 import OrdinaryCounter from './OrdinaryCounter'
@@ -27,6 +26,8 @@ export const update = createUpdate({
   })
 })
 
+const compose = (f, g) => x => f(g(x))
+
 export default component('App', (event, props) => {
   return props.get('model').map(({topCounter, bottomCounter}) => (
     <div>
@@ -34,22 +35,10 @@ export default component('App', (event, props) => {
         {event.map(Msg.TOP, <Counter count={topCounter} />)}
       </div>
       <div>
-        {event.map(
-          (evt) => {
-            if (evt.eventType === 'onIncClick') {
-              return Msg.BOTTOM(CM.Msg.INC(evt.payload))
-            }
-
-            if (evt.eventType === 'onDecClick') {
-              return Msg.BOTTOM(CM.Msg.DEC(evt.payload))
-            }
-          },
-          bridge(
-            <OrdinaryCounter count={bottomCounter} />,
-            'onIncClick',
-            'onDecClick'
-          )
-        )}
+        {event.mapOrdinary({
+          onIncClick: compose(Msg.BOTTOM, CM.Msg.INC),
+          onDecClick: compose(Msg.BOTTOM, CM.Msg.DEC),
+        }, <OrdinaryCounter count={bottomCounter} />)}
       </div>
     </div>
   ))

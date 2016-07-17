@@ -6,6 +6,29 @@ import {Observable, Subject} from 'rx'
 // util functions
 const id = a => a
 
+// ----- bridge functions -----
+export const bridge = (element, ...eventTypesList) => {
+  class Bridged extends React.Component {
+    dispatchEvent = (evt) => {
+      this.props.onEvent(evt)
+    }
+
+    eventHandlers = eventTypesList.reduce((r, eventType) => {
+      r[eventType] = payload => {
+        this.dispatchEvent({eventType, payload})
+      }
+      return r
+    }, {})
+
+    render() {
+      return React.cloneElement(element, this.eventHandlers)
+    }
+  }
+
+  return React.createElement(Bridged)
+}
+
+// ----- events -----
 export const createEventTypes = (...typeNames) => (
   typeNames.reduce((r, n) => {
     const ctor = payload => ({
@@ -21,10 +44,12 @@ export const createEventTypes = (...typeNames) => (
   }, {})
 )
 
+// ----- updates -----
 export const createUpdate = updateMap => (msg, model) => (
   updateMap[msg.eventType](msg.payload, model)
 )
 
+// ----- component -----
 export const component = (componentName, defFn, componentOptions) => {
   const cycleDefFn = (interaction, props, self, lifecycles) => {
     // event system
@@ -57,10 +82,16 @@ export const component = (componentName, defFn, componentOptions) => {
       })
     }
 
+    const mapOrdinaryEvent = (eventMap, element) => {
+      const mapper = evt => eventMap[evt.eventType](evt.payload)
+      return mapEvent(mapper, bridge(element, ...Object.keys(eventMap)))
+    }
+
     const linkEvent = element => mapEvent(id, element)
 
     registerEvent.map = mapEvent
     registerEvent.link = linkEvent
+    registerEvent.mapOrdinary = mapOrdinaryEvent
 
     // only allow view
     const view = defFn(registerEvent, props, self, lifecycles)
@@ -74,28 +105,6 @@ export const component = (componentName, defFn, componentOptions) => {
   }
 
   return Cycle.component(componentName, cycleDefFn, componentOptions)
-}
-
-// ----- bridge functions -----
-export const bridge = (element, ...eventTypesList) => {
-  class Bridged extends React.Component {
-    dispatchEvent = (evt) => {
-      this.props.onEvent(evt)
-    }
-
-    eventHandlers = eventTypesList.reduce((r, eventType) => {
-      r[eventType] = payload => {
-        this.dispatchEvent({eventType, payload})
-      }
-      return r
-    }, {})
-
-    render() {
-      return React.cloneElement(element, this.eventHandlers)
-    }
-  }
-
-  return React.createElement(Bridged)
 }
 
 // ----- main functions ------
