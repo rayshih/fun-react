@@ -1,14 +1,17 @@
 import React from 'react'
 import {component} from './fun-react'
 
+import {Msg} from './Counter'
+
 // You can just replace the Cycle.component to Fun.component
-// and every thing works like Fun
+// every thing just work
+// and you can mix cycle and fun together
 export default component('Counter', (interaction, props) => {
   const view = props.get('count').map(count => (
     <div>
       <h1>Count: {count}</h1>
       <button onClick={interaction.listener('inc')}>INC</button>
-      <button onClick={interaction.listener('dec')}>DEC</button>
+      <button onClick={interaction(Msg.DEC)}>DEC</button>
     </div>
   ))
 
@@ -16,7 +19,6 @@ export default component('Counter', (interaction, props) => {
     view,
     events: {
       onIncClick: interaction.get('inc'),
-      onDecClick: interaction.get('dec'),
     }
   }
 })

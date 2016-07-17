@@ -40,9 +40,12 @@ export default component('App', (event, props) => {
         {event.map(Msg.TOP, <Counter count={topCounter} />)}
       </div>
       <div>
-        {event.map({
-          onIncClick: compose(Msg.MIDDLE, CM.Msg.INC),
-          onDecClick: compose(Msg.MIDDLE, CM.Msg.DEC),
+        {event.map((evt) => {
+          if (evt.eventType === 'onIncClick') {
+            return compose(Msg.MIDDLE, CM.Msg.INC)(evt.payload)
+          }
+
+          return Msg.MIDDLE(evt)
         }, <CycleCounter count={middleCounter} />)}
       </div>
       <div>
