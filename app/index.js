@@ -1,4 +1,4 @@
-import {beginnerProgram} from './fun-react'
+import {beginnerProgram} from '../lib/html'
 import App, * as AM from './App'
 
 const rootEl = document.getElementById('app')
