@@ -6,7 +6,7 @@ import {Observable} from 'rx'
 
 const Item = Cycle.component('Item', (interactions, props) => {
   return {
-    view: props.get('name').map((name) => (
+    view: props.get('name').map(name => (
       <div>
         {name}
         <button
