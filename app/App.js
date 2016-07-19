@@ -3,7 +3,7 @@ import {
   createEventTypes,
   createUpdate,
   component,
-} from './fun-react'
+} from '../index'
 
 import OrdinaryCounter from './OrdinaryCounter'
 import CycleCounter from './CycleCounter'

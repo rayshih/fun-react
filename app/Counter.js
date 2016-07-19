@@ -3,7 +3,7 @@ import {
   createEventTypes,
   createUpdate,
   component,
-} from './fun-react'
+} from '../index'
 
 export const Msg = createEventTypes('INC', 'DEC')
 

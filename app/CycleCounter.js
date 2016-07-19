@@ -1,5 +1,5 @@
 import React from 'react'
-import {component} from './fun-react'
+import {component} from '../index'
 
 import {Msg} from './Counter'
 

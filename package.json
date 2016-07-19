@@ -1,14 +1,22 @@
 {
   "name": "fun-react",
   "version": "0.0.1",
-  "description": "An experiment project of simulate elm 0.17 in react",
+  "description": "Elm like js framework built on top of cycle-react",
+  "author": {
+    "name": "Ray Shih",
+    "email": "mnf.shih@gmail.com"
+  },
+  "license": "MIT",
   "main": "index.js",
   "scripts": {
     "start": "webpack-dev-server --inline --hot",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "Ray Shih (mnf.shih@gmail.com)",
-  "license": "MIT",
+  "peerDependencies": {
+    "rx": "*",
+    "react": "*",
+    "cycle-react": "4.x"
+  },
   "devDependencies": {
     "babel-core": "^6.10.4",
     "babel-eslint": "^6.1.2",
@@ -18,13 +26,10 @@
     "babel-preset-stage-0": "^6.5.0",
     "eslint-plugin-react": "^5.2.2",
     "webpack": "^1.13.1",
-    "webpack-dev-server": "^1.14.1"
-  },
-  "dependencies": {
-    "cycle-react": "^4.0.0",
-    "immutable": "^3.8.1",
+    "webpack-dev-server": "^1.14.1",
+    "rx": "^4.1.0",
     "react": "^15.2.1",
     "react-dom": "^15.2.1",
-    "rx": "^4.1.0"
+    "cycle-react": "^4.0.0"
   }
 }
