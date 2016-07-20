@@ -6,6 +6,10 @@
     "name": "Ray Shih",
     "email": "mnf.shih@gmail.com"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rayshih/fun-react"
+  },
   "license": "MIT",
   "main": "index.js",
   "scripts": {
