@@ -14,7 +14,7 @@ export const update = createUpdate({
   [Msg.DEC]: (_, model) => model - 1
 })
 
-export default component('Counter', (event, props) => {
+export default component('Counter', ({event}, props) => {
   return props.get('count').map(count => (
     <div>
       <h1>Count: {count}</h1>

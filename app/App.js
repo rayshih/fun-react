@@ -33,20 +33,20 @@ export const update = createUpdate({
 
 const compose = (f, g) => x => f(g(x))
 
-export default component('App', (event, props) => {
+export default component('App', ({link}, props) => {
   return props.get('model').map(({topCounter, middleCounter, bottomCounter}) => (
     <div>
       <div>
-        {event.map(Msg.TOP, <Counter count={topCounter} />)}
+        {link.map(Msg.TOP, <Counter count={topCounter} />)}
       </div>
       <div>
-        {event.mapWithObj({
+        {link.mapWithObj({
           onIncClick: compose(Msg.MIDDLE, CM.Msg.INC),
           _otherwise: Msg.MIDDLE
         }, <CycleCounter count={middleCounter} />)}
       </div>
       <div>
-        {event.mapOrdinary({
+        {link.mapOrdinary({
           onIncClick: compose(Msg.BOTTOM, CM.Msg.INC),
           onDecClick: compose(Msg.BOTTOM, CM.Msg.DEC),
         }, <OrdinaryCounter count={bottomCounter} />)}
