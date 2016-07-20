@@ -9,6 +9,5 @@ import {
 export const mapEvent = _mapEvent(React, Cycle)
 export const component = _component(React, Cycle)
 
-
 export * from './lib/architecture'
 export * from './lib/html'
