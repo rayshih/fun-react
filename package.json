@@ -1,6 +1,6 @@
 {
   "name": "fun-react",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Elm like js framework built on top of cycle-react",
   "author": {
     "name": "Ray Shih",
