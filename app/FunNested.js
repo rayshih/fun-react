@@ -9,7 +9,7 @@ import {
 
 export const Msg = createEventTypes('CLICK')
 
-const Item = component('Item', (event, props) => {
+const Item = component('Item', ({event}, props) => {
   return props.get('name').map(name => (
     <div>
       {name}
@@ -21,12 +21,12 @@ const Item = component('Item', (event, props) => {
   ))
 })
 
-const List = component('List', (event) => {
+const List = component('List', ({link}) => {
   return Observable.just(
     <div>
-      {event.link(<Item name="item 1" />)}
-      {event.link(<Item name="item 2" />)}
-      {event.link(<Item name="item 3" />)}
+      {link(<Item name="item 1" />)}
+      {link(<Item name="item 2" />)}
+      {link(<Item name="item 3" />)}
     </div>
   )
 })
