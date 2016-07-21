@@ -8,6 +8,10 @@
       "jsx": true
     }
   },
+  "globals": {
+    "module": false,
+    "require": false
+  },
   "rules": {
     "semi": ["warn", "never"],
     "no-unused-vars": "warn",
