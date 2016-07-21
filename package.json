@@ -1,6 +1,6 @@
 {
   "name": "fun-react",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "Elm like js framework built on top of cycle-react",
   "author": {
     "name": "Ray Shih",
@@ -17,13 +17,6 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "NODE_ENV=production babel src --out-dir lib",
     "prepublish": "npm run build"
-  },
-  "babel": {
-    "presets": [
-      "es2015",
-      "stage-0",
-      "react"
-    ]
   },
   "peerDependencies": {
     "rx": "*",
