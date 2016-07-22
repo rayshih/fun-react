@@ -1,24 +1,32 @@
-import {Observable, Subject} from 'rx'
+import {Subject} from 'rx'
 import createBridge from './bridge'
 import {id} from './util'
 
-export const mapEvent = (React, Cycle) => (mapper, element) => {
-  const Wrapped = Cycle.component('Wrapped', (interactions) => {
-    const event$ = interactions.get('on_event').map(mapper)
+export const mapEvent = (React, Cycle) => {
+  const Mapper = Cycle.component('Mapper', (interactions, props) => {
+    const mapFn$ = props.get('mapFn')
+    const event$ = interactions.get('on_event')
+    .withLatestFrom(mapFn$, (evt, mapFn) => mapFn(evt))
 
     return {
-      view: Observable.just(
+      view: props.get('element').map(element => (
         React.cloneElement(element, {
           onEvent: interactions.listener('on_event')
         })
-      ),
+      )),
       events: {
         onEvent: event$
       }
     }
   })
 
-  return React.createElement(Wrapped, {key: element.key})
+  return (mapFn, element) => {
+    return React.createElement(Mapper, {
+      key: element.key,
+      mapFn,
+      element
+    })
+  }
 }
 
 export const component =
@@ -64,7 +72,7 @@ export const component =
     // map
     const mapEventWithObj = (obj, element) => {
       const otherwise = obj._otherwise
-      const mapper = evt => {
+      const mapFn = evt => {
         const fn = obj[evt.eventType]
         if (fn) {
           return fn(evt.payload)
@@ -73,20 +81,22 @@ export const component =
         if (otherwise) {
           return otherwise(evt)
         }
+
+        return evt // by pass if not handled
       }
 
-      return map(mapper, element)
+      return map(mapFn, element)
     }
 
     const mapOrdinaryEvent = (eventMap, element) => {
-      const mapper = evt => eventMap[evt.eventType](evt.payload)
-      return map(mapper, bridge(element, ...Object.keys(eventMap)))
+      const mapFn = evt => eventMap[evt.eventType](evt.payload)
+      return map(mapFn, bridge(element, ...Object.keys(eventMap)))
     }
 
     // map and link
-    const mapAndLinkEvent = (mapper, element) => {
+    const mapAndLinkEvent = (mapFn, element) => {
       return linkEvent(
-        map(mapper, element)
+        map(mapFn, element)
       )
     }
 
