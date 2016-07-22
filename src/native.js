@@ -6,7 +6,7 @@ import {
   component as _component
 } from './component'
 
-export * from './type'
+export * from './type-system'
 
 export const mapEvent = _mapEvent(React, Cycle)
 export const component = _component(React, Cycle)

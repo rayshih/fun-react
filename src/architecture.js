@@ -1,4 +1,4 @@
-import {caseOf} from './type'
+import {caseOf} from './type-system'
 
 export const createUpdate = updateMap => {
   const fnMap = {...updateMap}
