@@ -1,4 +1,3 @@
-// TODO peer dependencies?
 import React from 'react'
 import ReactDOM from 'react-dom'
 import {Observable, Subject} from 'rx'

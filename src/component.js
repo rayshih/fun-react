@@ -36,28 +36,14 @@ export const component =
 
   const cycleDefFn = (interactions, props, self, lifecycles) => {
     // event system
-    const eventTypes = []
     const event$ = new Subject()
     const sendEvent = event => {
       event$.onNext(event)
     }
 
-    const forwardEvent = (eventType, evt$) => (
-      evt$.subscribe(payload => {
-        sendEvent({eventType, payload})
-      })
-    )
-
     // register function
-    const registerEvent = (eventType, transform = id) => {
-      // eventTypeName
-      const etn = eventType.typeName
-      if (!eventTypes.includes(etn)) {
-        eventTypes.push(etn)
-        forwardEvent(etn, interactions.get(etn).map(transform))
-      }
-
-      return interactions.listener(etn)
+    const event = (type, transform = id) => {
+      return evt => sendEvent(type(transform(evt)))
     }
 
     // link
@@ -67,25 +53,6 @@ export const component =
       })
     }
 
-    // map
-    const mapEventWithObj = (obj, element) => {
-      const otherwise = obj._otherwise
-      const mapFn = evt => {
-        const fn = obj[evt.eventType]
-        if (fn) {
-          return fn(evt.payload)
-        }
-
-        if (otherwise) {
-          return otherwise(evt)
-        }
-
-        return evt // by pass if not handled
-      }
-
-      return map(mapFn, element)
-    }
-
     // map and link
     const mapAndLinkEvent = (mapFn, element) => {
       return linkEvent(
@@ -93,23 +60,13 @@ export const component =
       )
     }
 
-    const mapAndLinkEventWithObj = (obj, element) => {
-      return linkEvent(
-        mapEventWithObj(obj, element)
-      )
-    }
-
     // binding API
     linkEvent.map = mapAndLinkEvent
-    linkEvent.mapWithObj = mapAndLinkEventWithObj
 
     const fun = {
-      event: registerEvent,
+      event,
       link: linkEvent,
-
-      map: map,
-      mapWithObj: mapEventWithObj,
-
+      map,
       interactions, // cycle compatible
     }
 
@@ -119,14 +76,16 @@ export const component =
       : {view: cycleDef, events: {}}
 
     // dispatch cycle events
-    Object.keys(cycleEvents).forEach(eventType => {
-      const obs$ = cycleEvents[eventType]
-      forwardEvent(eventType, obs$)
+    Object.keys(cycleEvents).forEach(type => {
+      const obs$ = cycleEvents[type]
+      obs$.subscribe(payload => {
+        sendEvent({type, payload})
+      })
     })
 
     // TODO write test
     const dispatchToOrdinaryReactInterface = evt => {
-      const cb = self.props[evt.eventType]
+      const cb = self.props[evt.type]
       if (cb) {
         cb(evt.payload)
       }

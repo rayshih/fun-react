@@ -1,16 +1,18 @@
 import React from 'react'
 import {
-  createEventTypes,
+  createTypes,
   createUpdate,
   component,
-} from '../index'
+  caseOf,
+  compose,
+} from '../src/index'
 
 import OrdinaryCounter from './OrdinaryCounter'
 import CycleCounter from './CycleCounter'
 import Counter, * as CM from './Counter'
 // CM stand for Counter module
 
-const Msg = createEventTypes('TOP', 'MIDDLE', 'BOTTOM')
+const Msg = createTypes('TOP', 'MIDDLE', 'BOTTOM')
 
 export const init = (top, middle, bottom) => ({
   topCounter: CM.init(top),
@@ -31,25 +33,26 @@ export const update = createUpdate({
   })
 })
 
-const compose = (f, g) => x => f(g(x))
-
-export default component('App', ({link}, props) => {
+export default component('App', ({link, event}, props) => {
   return props.get('model').map(({topCounter, middleCounter, bottomCounter}) => (
     <div>
       <div>
         {link.map(Msg.TOP, <Counter count={topCounter} />)}
       </div>
       <div>
-        {link.mapWithObj({
-          onIncClick: compose(Msg.MIDDLE, CM.Msg.INC),
-          _otherwise: Msg.MIDDLE
+        {link.map(evt => {
+          return caseOf({
+            onIncClick: compose(Msg.MIDDLE, CM.Msg.INC),
+            _otherwise: Msg.MIDDLE
+          })(evt)
         }, <CycleCounter count={middleCounter} />)}
       </div>
       <div>
-        {link.mapOrdinary({
-          onIncClick: compose(Msg.BOTTOM, CM.Msg.INC),
-          onDecClick: compose(Msg.BOTTOM, CM.Msg.DEC),
-        }, <OrdinaryCounter count={bottomCounter} />)}
+        <OrdinaryCounter
+          count={bottomCounter}
+          onIncClick={event(compose(Msg.BOTTOM, CM.Msg.INC))}
+          onDecClick={event(compose(Msg.BOTTOM, CM.Msg.DEC))}
+        />
       </div>
     </div>
   ))

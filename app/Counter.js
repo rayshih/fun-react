@@ -1,11 +1,11 @@
 import React from 'react'
 import {
-  createEventTypes,
+  createTypes,
   createUpdate,
   component,
-} from '../index'
+} from '../src/index'
 
-export const Msg = createEventTypes('INC', 'DEC')
+export const Msg = createTypes('INC', 'DEC')
 
 export const init = count => count
 

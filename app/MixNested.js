@@ -1,10 +1,10 @@
 /* global console */
 
 import React from 'react'
-import {component, createEventTypes} from '../src/index'
+import {component, createTypes, caseOf} from '../src/index'
 import {Observable} from 'rx'
 
-const Msg = createEventTypes(
+const Msg = createTypes(
   'onClick1',
   'Click2'
 )
@@ -35,10 +35,10 @@ const List = component('List', ({interactions, link}, props) => {
     <div>
       {
         [1, 2, 3].map(i => `item ${i}`).map(name => (
-          link.mapWithObj({
+          link.map(caseOf({
             onClick1: name => Msg.onClick1(`mapped ${name} for onClick1`),
             Click2: name => Msg.Click2(`mapped ${name} for Click2`)
-          }, (
+          }), (
               <Item
                 key={name}
                 name={name}

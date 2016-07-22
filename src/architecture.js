@@ -1,20 +1,11 @@
-// ----- events -----
-export const createEventTypes = (...typeNames) => (
-  typeNames.reduce((r, n) => {
-    const ctor = payload => ({
-      eventType: n,
-      payload
-    })
+import {caseOf} from './type'
 
-    ctor.typeName = n
-    ctor.toString = () => n
+export const createUpdate = updateMap => {
+  const fnMap = {...updateMap}
 
-    r[n] = ctor
-    return r
-  }, {})
-)
+  if (fnMap._otherwise) {
+    fnMap._otherwise = (_, model) => model
+  }
 
-// ----- updates -----
-export const createUpdate = updateMap => (msg, model) => (
-  updateMap[msg.eventType](msg.payload, model)
-)
+  return caseOf(updateMap)
+}
