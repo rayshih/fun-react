@@ -1,5 +1,4 @@
 import {Subject} from 'rx'
-import createBridge from './bridge'
 import {id} from './util'
 
 export const mapEvent = (React, Cycle) => {
@@ -33,7 +32,6 @@ export const component =
   (React, Cycle) => (componentName, defFn, componentOptions) =>
 {
   // binding context
-  const bridge = createBridge(React, Cycle)
   const map = mapEvent(React, Cycle)
 
   const cycleDefFn = (interactions, props, self, lifecycles) => {
@@ -88,11 +86,6 @@ export const component =
       return map(mapFn, element)
     }
 
-    const mapOrdinaryEvent = (eventMap, element) => {
-      const mapFn = evt => eventMap[evt.eventType](evt.payload)
-      return map(mapFn, bridge(element, ...Object.keys(eventMap)))
-    }
-
     // map and link
     const mapAndLinkEvent = (mapFn, element) => {
       return linkEvent(
@@ -106,16 +99,9 @@ export const component =
       )
     }
 
-    const mapAndLinkOrdinaryEvent = (eventHandlerMap, element) => {
-      return linkEvent(
-        mapOrdinaryEvent(eventHandlerMap, element)
-      )
-    }
-
     // binding API
     linkEvent.map = mapAndLinkEvent
     linkEvent.mapWithObj = mapAndLinkEventWithObj
-    linkEvent.mapOrdinary = mapAndLinkOrdinaryEvent
 
     const fun = {
       event: registerEvent,
@@ -123,7 +109,6 @@ export const component =
 
       map: map,
       mapWithObj: mapEventWithObj,
-      mapOrdinary: mapOrdinaryEvent,
 
       interactions, // cycle compatible
     }
