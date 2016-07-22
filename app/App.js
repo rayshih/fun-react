@@ -40,12 +40,10 @@ export default component('App', ({link, event}, props) => {
         {link.map(Msg.TOP, <Counter count={topCounter} />)}
       </div>
       <div>
-        {link.map(evt => {
-          return caseOf({
-            onIncClick: compose(Msg.MIDDLE, CM.Msg.INC),
-            _otherwise: Msg.MIDDLE
-          })(evt)
-        }, <CycleCounter count={middleCounter} />)}
+        {link.map(caseOf({
+          onIncClick: compose(Msg.MIDDLE, CM.Msg.INC),
+          _otherwise: Msg.MIDDLE
+        }), <CycleCounter count={middleCounter} />)}
       </div>
       <div>
         <OrdinaryCounter
