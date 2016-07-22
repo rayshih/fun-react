@@ -1,4 +1,3 @@
-// ----- events -----
 export const createTypes = (...typeNames) => (
   typeNames.reduce((r, n) => {
     const ctor = payload => ({
