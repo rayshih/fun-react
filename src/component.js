@@ -18,7 +18,7 @@ export const mapEvent = (React, Cycle) => (mapper, element) => {
     }
   })
 
-  return React.createElement(Wrapped)
+  return React.createElement(Wrapped, {key: element.key})
 }
 
 export const component =
@@ -123,15 +123,24 @@ export const component =
       ? cycleDef
       : {view: cycleDef, events: {}}
 
+    // dispatch cycle events
     Object.keys(cycleEvents).forEach(eventType => {
       const obs$ = cycleEvents[eventType]
       forwardEvent(eventType, obs$)
     })
 
+    // TODO write test
+    const dispatchToOrdinaryReactInterface = evt => {
+      const cb = self.props[evt.eventType]
+      if (cb) {
+        cb(evt.payload)
+      }
+    }
+
     return {
       view,
       events: {
-        onEvent: event$
+        onEvent: event$.doOnNext(dispatchToOrdinaryReactInterface)
       }
     }
   }

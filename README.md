@@ -2,7 +2,6 @@
 
 ## TODO
 
-- merge branches
-
 - write doc
+- restructure examples
 - add test
