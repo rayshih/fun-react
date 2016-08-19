@@ -76,14 +76,8 @@ export const component =
       : {view: cycleDef, events: {}}
 
     // dispatch cycle events
-    Object.keys(cycleEvents).forEach(type => {
-      const obs$ = cycleEvents[type]
-      obs$.subscribe(payload => {
-        sendEvent({type, payload})
-      })
-    })
-
     // TODO write test
+    // dispatch to original react interface
     const dispatchToOrdinaryReactInterface = evt => {
       const cb = self.props[evt.type]
       if (cb) {
@@ -91,10 +85,20 @@ export const component =
       }
     }
 
+    event$.subscribe(dispatchToOrdinaryReactInterface)
+
+    // dispatch to fun react interface
+    Object.keys(cycleEvents).forEach(type => {
+      const obs$ = cycleEvents[type]
+      obs$.subscribe(payload => {
+        sendEvent({type, payload})
+      })
+    })
+
     return {
       view,
       events: {
-        onEvent: event$.doOnNext(dispatchToOrdinaryReactInterface)
+        onEvent: event$
       }
     }
   }
