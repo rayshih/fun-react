@@ -1,5 +1,5 @@
-import React from 'react-native'
-import Cycle from 'cycle-react/native'
+import React from 'react'
+import Cycle from 'cycle-react'
 
 import {
   mapEvent as _mapEvent,
