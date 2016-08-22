@@ -21,7 +21,6 @@ The overall concept is the same: the state reducer. The main differences are:
 		- `event`: event declaration
 		- `link`: event binding between parent and children
 
-
 ### If you are using Cycle React:
 
 TODO
@@ -63,15 +62,15 @@ TODO explain what is Functor, and why can react element be a functor
 
 ## TODO
 
-- write doc
-	- README
-	- API document
 - restructure examples
 	- counter
 	- nested counter
 	- todo list
 	- cycle interoperable
 	- react interoperable
+- write doc
+	- README
+	- API document
 - add jsbin env
 - implement type checking
 - add test
