@@ -1,0 +1,27 @@
+{
+  "name": "fun-react-hello-example",
+  "version": "1.0.0",
+  "description": "Fun React hello example",
+  "scripts": {
+    "start": "webpack-dev-server -d --inline --hot",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Ray Shih <mnf.shih@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "cycle-react": "^4.0.0",
+    "fun-react": "0.0.15",
+    "react": "^15.3.1",
+    "react-dom": "^15.3.1",
+    "rx": "^4.1.0"
+  },
+  "devDependencies": {
+    "babel-core": "^6.11.4",
+    "babel-loader": "^6.2.4",
+    "babel-preset-es2015": "^6.9.0",
+    "babel-preset-react": "^6.11.1",
+    "babel-preset-stage-0": "^6.5.0",
+    "webpack": "^1.13.1",
+    "webpack-dev-server": "^1.14.1"
+  }
+}

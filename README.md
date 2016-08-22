@@ -15,10 +15,11 @@ The overall concept is the same: the state reducer. The main differences are:
 1. We call `reducers` as `update` functions
 2. We use simple type system to replace redux action
 3. We use `program` instead of `<Provider />`
-4. There is no `connect`. For data, we encourage to pass data all the way down. For event, we use very simple event system, there is only two function need to know:
-	- `event`: event declaration
-	- `link`: event binding between parent and children
-
+4. There is no `connect`.
+	- For data, we encourage to pass data all the way down.
+	- For event, we use very simple event system, there is only two function need to know:
+		- `event`: event declaration
+		- `link`: event binding between parent and children
 
 ### If you are using Cycle React:
 
@@ -32,17 +33,47 @@ npm install --save fun-react cycle-react react rx
 
 ## Example
 
+To run example
+
+```bash
+cd examples/__the_example__
+npm install
+npm start
+```
+
+then open `http://localhost:8080` in browser.
+
+### Basic counter
+
+### Nested counter
+
+### Use with vanilla React
+
+### Learn more
 
 ## Philosophy
 
-Why name it Fun React:
+The name imply the philosophy. So why name it Fun React:
 
 1. We treat react element as a functor of event and the virtual dom is the context of the functor, so Fun React means: Functor React.
 2. It is fun.
 
+TODO explain what is Functor, and why can react element be a functor
 
 ## TODO
 
-- write doc
 - restructure examples
+	- counter
+	- nested counter
+	- todo list
+	- cycle interoperable
+	- react interoperable
+- write doc
+	- README
+	- API document
+- add jsbin env
+- implement type checking
 - add test
+- implement HTML.program
+	- side effect (CMD) and subscription
+- implement `html`
