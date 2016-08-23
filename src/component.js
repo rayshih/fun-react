@@ -1,38 +1,38 @@
+import React from 'react'
+import Cycle from 'cycle-react'
 import {Subject} from 'rx'
 import {id} from './util'
 
-export const mapEvent = (React, Cycle) => {
-  const Mapper = Cycle.component('Mapper', (interactions, props) => {
-    const mapFn$ = props.get('mapFn')
-    const event$ = interactions.get('on_event')
-    .withLatestFrom(mapFn$, (evt, mapFn) => mapFn(evt))
+const Mapper = Cycle.component('Mapper', (interactions, props) => {
+  const mapFn$ = props.get('mapFn')
+  const event$ = interactions.get('on_event')
+  .withLatestFrom(mapFn$, (evt, mapFn) => mapFn(evt))
 
-    return {
-      view: props.get('element').map(element => (
-        React.cloneElement(element, {
-          onEvent: interactions.listener('on_event')
-        })
-      )),
-      events: {
-        onEvent: event$
-      }
+  return {
+    view: props.get('element').map(element => (
+      React.cloneElement(element, {
+        onEvent: interactions.listener('on_event')
+      })
+    )),
+    events: {
+      onEvent: event$
     }
-  })
-
-  return (mapFn, element) => {
-    return React.createElement(Mapper, {
-      key: element.key,
-      mapFn,
-      element
-    })
   }
+})
+
+export const mapEvent = (mapFn, element) => {
+  return React.createElement(Mapper, {
+    key: element.key,
+    mapFn,
+    element
+  })
 }
 
 export const component =
-  (React, Cycle) => (componentName, defFn, componentOptions) =>
+  (componentName, defFn, componentOptions) =>
 {
   // binding context
-  const map = mapEvent(React, Cycle)
+  const map = mapEvent
 
   const cycleDefFn = (interactions, props, self, lifecycles) => {
     // event system
