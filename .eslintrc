@@ -12,7 +12,8 @@
     "module": false,
     "require": false,
     "__dirname": false,
-    "document": false
+    "document": false,
+    "fetch": false
   },
   "rules": {
     "semi": ["warn", "never"],

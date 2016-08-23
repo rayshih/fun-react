@@ -1,74 +1,69 @@
 import React from 'react'
+import ReactDOM from 'react-dom'
+import {Observable} from 'rx'
 import {
   createTypes,
   createUpdate,
   component,
-  beginnerProgram
-} from 'fun-react'
+  createProgram,
+} from '../../src' // 'fun-react'
 
 /**
  * This is an example ported from http://elm-lang.org/examples/http
  */
 
-const trace = v => {
-  console.log(v)
-  return v
+const Msg = createTypes(
+  'MorePlease',
+  'FetchSucceed',
+  'FetchFail'
+)
+
+const getRandomGif = topic => {
+  const url =
+    "https://api.giphy.com/v1/gifs/random?api_key=dc6zaTOxFJmzC&tag=" + topic
+
+  const json = fetch(url).then(res => res.json())
+  return Observable.fromPromise(json)
+  .map(json => json.data.image_url)
+  .map(Msg.FetchSucceed)
 }
 
-// 1. define your init model
-const init = topic => ([
+const init = topic => [
   {
     topic,
     gifUrl: "waiting.gif"
   },
-  // TODO CMD here
-])
+  [getRandomGif(topic)]
+]
 
-// 2. define Msg, which is basically a wrapper of ui event
-// createTypes help us to annotate the data
-const Msg = createTypes(
-  'InputChange',
-  'Add', 'Delete',
-  'Check', 'ChangeVisibility'
-)
-
-// 3. define update function (the reducer)
 const update = createUpdate({
-  [Msg.InputChange]: (event, model) => ({
-    ...model,
-    currentInputText: trace(event.target.value)
-  }),
+  [Msg.MorePlease]: (event, model) =>
+    [model, getRandomGif(model.topic)],
 
-  [Msg.Add]: (_, model) => ({
-    ...model,
-    seq: model.seq + 1,
-    todos: [...model.todos, {
-      id: model.seq + 1, title: model.currentInputText
-    }]
-  })
+  [Msg.FetchSucceed]: (newUrl, model) =>
+    [{...model, gifUrl: newUrl}, []],
+
+  [Msg.FetchFail]: (event, model) =>
+    [model, []],
 })
 
-// 4. define view
 const HttpExample = component('HttpExample', ({event}, props) => {
   return props.get('model').map(model => (
     <div>
-      {
-        model.todos.map(item => (
-          <div key={item.id}>
-            {item.id}: {item.title}
-          </div>
-        ))
-      }
-      <input value={model.currentInputText} onChange={event(Msg.InputChange)} />
-      <button onClick={event(Msg.Add)}>Add</button>
+      <h2>{model.topic}</h2>
+      <button onClick={event(Msg.MorePlease)}>More Please!</button>
+      <br />
+      <img src={model.gifUrl} />
     </div>
   ))
 })
 
 const rootEl = document.getElementById('app')
 
-beginnerProgram({
-  model: init,
+const Program = createProgram({
+  init: init('cats'),
   update,
   view: HttpExample
-}, rootEl)
+})
+
+ReactDOM.render(<Program />, rootEl)

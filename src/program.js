@@ -3,19 +3,26 @@ import {Observable, Subject} from 'rx'
 import {component} from './component'
 
 // ----- main functions ------
-export const beginnerProgram = ({
-  model,
+export const createProgram = ({
+  init,
   update,
-  view
-}) => component('BeginnerProgram', () => {
+  view,
+  // inputs, // TODO
+}) => component('Program', () => {
   const rootEvent$ = new Subject()
   const handleEvent = msg => rootEvent$.onNext(msg)
 
-  const store$ = Observable.just(model).concat(rootEvent$)
-  .scan((model, msg) => update(msg, model))
-  .share() // TODO implement CMD
+  const update$ = Observable.just(init).concat(rootEvent$)
+  .scan(([model], msg) => update(msg, model))
+  .share()
 
-  return store$.map(model => React.createElement(
+  const model$ = update$.map(([model]) => model)
+  const effect$ = update$
+  .flatMap(([, effects]) => Observable.merge(effects))
+
+  effect$.subscribe(handleEvent)
+
+  return model$.map(model => React.createElement(
     view, {model, onEvent: handleEvent}
   ))
 })
