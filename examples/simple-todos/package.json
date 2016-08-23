@@ -10,7 +10,7 @@
   "license": "MIT",
   "dependencies": {
     "cycle-react": "^4.0.0",
-    "fun-react": "file:../../",
+    "fun-react": "0.0.15",
     "lodash": "^4.15.0",
     "react": "^15.3.1",
     "react-dom": "^15.3.1",
