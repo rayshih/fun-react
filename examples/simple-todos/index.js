@@ -1,4 +1,5 @@
 import React from 'react'
+import ReactDOM from 'react-dom'
 import {
   createTypes,
   createUpdate,
@@ -61,8 +62,10 @@ const SimpleTodoList = component('SimpleTodoList', ({event}, props) => {
 
 const rootEl = document.getElementById('app')
 
-beginnerProgram({
+const Program = beginnerProgram({
   model: init,
   update,
   view: SimpleTodoList
-}, rootEl)
+})
+
+ReactDOM.render(<Program />, rootEl)

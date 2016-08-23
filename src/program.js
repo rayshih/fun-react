@@ -1,25 +1,21 @@
 import React from 'react'
-import ReactDOM from 'react-dom'
 import {Observable, Subject} from 'rx'
+import {component} from './component'
 
 // ----- main functions ------
-// this only works on web
 export const beginnerProgram = ({
   model,
   update,
   view
-}, rootEl) => {
+}) => component('BeginnerProgram', () => {
   const rootEvent$ = new Subject()
   const handleEvent = msg => rootEvent$.onNext(msg)
 
   const store$ = Observable.just(model).concat(rootEvent$)
   .scan((model, msg) => update(msg, model))
+  .share() // TODO implement CMD
 
-  store$.subscribe(model => {
-    const root = React.createElement(
-      view, {model, onEvent: handleEvent}
-    )
-
-    ReactDOM.render(root, rootEl)
-  })
-}
+  return store$.map(model => React.createElement(
+    view, {model, onEvent: handleEvent}
+  ))
+})
