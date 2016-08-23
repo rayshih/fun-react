@@ -1,5 +1,7 @@
 # Fun React
 
+[![Join the chat at https://gitter.im/rayshih/fun-react](https://badges.gitter.im/rayshih/fun-react.svg)](https://gitter.im/rayshih/fun-react?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 Fun React is a React framework.
 
 ## Introduction
