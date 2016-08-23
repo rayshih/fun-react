@@ -1,6 +1,6 @@
 import React from 'react'
 import ReactDom from 'react-dom'
-import {component} from 'fun-react'
+import {component} from '../../src'
 
 const rootEl = document.getElementById('app')
 

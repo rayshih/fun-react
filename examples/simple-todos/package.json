@@ -1,7 +1,7 @@
 {
-  "name": "fun-react-hello-example",
+  "name": "fun-react-simple-todo-example",
   "version": "1.0.0",
-  "description": "Fun React hello example",
+  "description": "Fun React simple todolist example",
   "scripts": {
     "start": "webpack-dev-server -d --inline --hot",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -10,6 +10,8 @@
   "license": "MIT",
   "dependencies": {
     "cycle-react": "^4.0.0",
+    "fun-react": "0.0.15",
+    "lodash": "^4.15.0",
     "react": "^15.3.1",
     "react-dom": "^15.3.1",
     "rx": "^4.1.0"

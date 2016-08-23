@@ -1,7 +1,7 @@
 {
-  "name": "fun-react-hello-example",
+  "name": "fun-react-http-example",
   "version": "1.0.0",
-  "description": "Fun React hello example",
+  "description": "Fun React simple todolist example",
   "scripts": {
     "start": "webpack-dev-server -d --inline --hot",
     "test": "echo \"Error: no test specified\" && exit 1"
