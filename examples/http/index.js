@@ -6,7 +6,7 @@ import {
   createUpdate,
   component,
   createProgram,
-} from '../../src' // 'fun-react'
+} from '../../src'
 
 /**
  * This is an example ported from http://elm-lang.org/examples/http

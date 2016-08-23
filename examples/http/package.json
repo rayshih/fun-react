@@ -1,5 +1,5 @@
 {
-  "name": "fun-react-simple-todo-example",
+  "name": "fun-react-http-example",
   "version": "1.0.0",
   "description": "Fun React simple todolist example",
   "scripts": {
@@ -10,7 +10,6 @@
   "license": "MIT",
   "dependencies": {
     "cycle-react": "^4.0.0",
-    "fun-react": "file:../../",
     "react": "^15.3.1",
     "react-dom": "^15.3.1",
     "rx": "^4.1.0"
