@@ -4,13 +4,11 @@ import {
   createTypes,
   createUpdate,
   component,
-  beginnerProgram
-} from 'fun-react'
-
-const trace = v => {
-  console.log(v)
-  return v
-}
+  createProgram,
+  fromSimpleInit,
+  fromSimpleUpdate,
+  trace,
+} from '../../src'
 
 // 1. define your init model
 const init = {
@@ -36,6 +34,7 @@ const update = createUpdate({
 
   [Msg.Add]: (_, model) => ({
     ...model,
+    currentInputText: '',
     seq: model.seq + 1,
     todos: [...model.todos, {
       id: model.seq + 1, title: model.currentInputText
@@ -48,7 +47,7 @@ const SimpleTodoList = component('SimpleTodoList', ({event}, props) => {
   return props.get('model').map(model => (
     <div>
       {
-        model.todos.map(item => (
+        trace(model).todos.map(item => (
           <div key={item.id}>
             {item.id}: {item.title}
           </div>
@@ -62,9 +61,9 @@ const SimpleTodoList = component('SimpleTodoList', ({event}, props) => {
 
 const rootEl = document.getElementById('app')
 
-const Program = beginnerProgram({
-  model: init,
-  update,
+const Program = createProgram({
+  init: fromSimpleInit(init),
+  update: fromSimpleUpdate(update),
   view: SimpleTodoList
 })
 

@@ -14,7 +14,7 @@ export const createProgram = ({
 
   const update$ = Observable.just(init).concat(rootEvent$)
   .scan(([model], msg) => update(msg, model))
-  .share()
+  .shareReplay(1)
 
   const model$ = update$.map(([model]) => model)
   const effect$ = update$
@@ -26,3 +26,9 @@ export const createProgram = ({
     view, {model, onEvent: handleEvent}
   ))
 })
+
+export const fromSimpleInit = model => [model, []]
+export const fromSimpleUpdate = update => (msg, model) => [
+  update(msg, model),
+  []
+]
