@@ -1,0 +1,15 @@
+[ignore]
+
+[include]
+./node_modules/fbjs/lib
+
+[libs]
+./node_modules/fbjs/flow/lib
+
+[options]
+suppress_type=$FlowIssue
+suppress_type=$FlowFixMe
+suppress_type=$FixMe
+
+[version]
+^0.31.0
