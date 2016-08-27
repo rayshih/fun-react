@@ -4,8 +4,8 @@ export type Typed<P> = { type: string, payload: P }
 export type TypedCtor<P> = (payload: P) => Typed<P>
 export type TypedCtorMap = { [key: string]: TypedCtor<mixed> }
 
-export const createTypes = (...typeNames: Array<string>): TypedCtorMap => (
-  typeNames.reduce((r, n) => {
+export const createTypes = (...typeNames: Array<string>): TypedCtorMap => {
+  const types = typeNames.reduce((r, n) => {
     const ctor = payload => ({
       type: n,
       payload
@@ -17,7 +17,22 @@ export const createTypes = (...typeNames: Array<string>): TypedCtorMap => (
     r[n] = ctor
     return r
   }, {})
-)
+
+  if (process.env.NODE_ENV !== 'production') {
+    return new Proxy(types, {
+      get(target, name) {
+        if (typeof target[name] === 'undefined') {
+          throw new Error(`Type ${name} is not defined`)
+        }
+
+        return target[name]
+      }
+    })
+  }
+
+  return types
+}
+
 
 export type MapFn<A, B, C> = (obj: A, extra: B) => C
 export type MapFnMap<A, B, C> = { [key: string]: MapFn<A, B, C> }
