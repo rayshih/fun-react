@@ -14,19 +14,8 @@ import {
 
 import type {UpdateFnMap} from '../../src'
 
-type TodoItem = {
-  id: number,
-  title: string
-}
-
-type Model = {
-  currentInputText: string,
-  seq: number,
-  todos: Array<TodoItem>
-}
-
 // 1. define your init model
-const init: Model = {
+const init = {
   currentInputText: '', // input state
   seq: 0,               // sequential id
   todos: []             // no todo item initially
@@ -42,12 +31,12 @@ const Msg = createTypes(
 
 // 3. define update function (the reducer)
 const update = createSimpleUpdate({
-  InputChange: (event: Object, model: Model) => ({
+  InputChange: (event: Object, model) => ({
     ...model,
     currentInputText: trace(event.target.value)
   }),
 
-  Add: (_, model: Model) => ({
+  Add: (_, model) => ({
     ...model,
     currentInputText: '',
     seq: model.seq + 1,
