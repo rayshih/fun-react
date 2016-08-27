@@ -12,8 +12,6 @@ import {
   trace,
 } from '../../src'
 
-import type {UpdateFnMap} from '../../src'
-
 // 1. define your init model
 const init = {
   currentInputText: '', // input state

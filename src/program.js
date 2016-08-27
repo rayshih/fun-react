@@ -5,15 +5,17 @@ import {Observable, Subject} from 'rx'
 import {component} from './component'
 
 import {caseOf} from './type-system'
-import type {Typed, FnMap} from './type-system'
+import type {Typed, MapFn, MapFnMap} from './type-system'
 
 // ----- main functions ------
+export type UpdateFn<M, R> = MapFn<Typed<any>, M, R>
+export type UpdateFnMap<M, R> = MapFnMap<Typed<any>, M, R>
 export type Reaction<M> = [M, Array<Observable>]
 
 export type ProgramParam<M> = {
   init: Reaction<M>,
   update: UpdateFn<M, Reaction<M>>,
-  view: ReactClass<{}>
+  view: ReactClass<*>
 }
 
 export const createProgram = <M> ({
@@ -41,27 +43,20 @@ export const createProgram = <M> ({
 })
 
 // ----- update function helper ------
-export type UpdateFn<M, R> = (msg: Typed<any>, model: M) => R
-export type UpdateFnMap<M, R> = { [key: string]: UpdateFn<M, R> }
-
-export const createSimpleUpdate = <M> (updateMap: UpdateFnMap<M, M>): UpdateFn<M, M> => {
-  const fnMap = {...updateMap}
-
-  if (!fnMap._otherwise) {
-    fnMap._otherwise = (_, model: any): any => model
-  }
-
-  return caseOf(fnMap)
+export const createSimpleUpdate = <M> (
+  updateMap: UpdateFnMap<M, M>,
+  otherwise?: UpdateFn<M, M>
+): UpdateFn<M, M> => {
+  otherwise = otherwise || ((_, model) => model)
+  return caseOf(updateMap, otherwise)
 }
 
-export const createUpdate = <M, R: Reaction<M>> (updateMap: UpdateFnMap<M, R>): UpdateFn<M, R> => {
-  const fnMap = {...updateMap}
-
-  if (!fnMap._otherwise) {
-    fnMap._otherwise = (_, model: any): any => [model, []]
-  }
-
-  return caseOf(fnMap)
+export const createUpdate = <M> (
+  updateMap: UpdateFnMap<M, Reaction<M>>,
+  otherwise?: UpdateFn<M, Reaction<M>>
+): UpdateFn<M, Reaction<M>> => {
+  otherwise = otherwise || ((_, model) => [model, []])
+  return caseOf(updateMap, otherwise)
 }
 
 export const fromSimpleInit = <M> (model: M): Reaction<M> => [model, []]

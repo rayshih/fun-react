@@ -2,10 +2,10 @@
 
 import React from 'react'
 import Cycle from 'cycle-react'
-import {Subject} from 'rx'
+import {Subject, Observable} from 'rx'
 import {id} from './util'
 
-import type {Fn} from './type-system'
+import type {Fn, TypedCtor} from './type-system'
 
 const Mapper = Cycle.component('Mapper', (interactions, props) => {
   const mapFn$ = props.get('mapFn')
@@ -24,7 +24,12 @@ const Mapper = Cycle.component('Mapper', (interactions, props) => {
   }
 })
 
-export const mapEvent = <A, B> (mapFn: Fn<A, B>, element: React$Element<*>) => {
+export type MapReactElement = (
+  mapFn: Fn<any, any>,
+  element: React$Element<*>
+) => React$Element<*>
+
+export const mapEvent: MapReactElement = (mapFn, element) => {
   return React.createElement(Mapper, {
     key: element.key,
     mapFn,
@@ -32,9 +37,27 @@ export const mapEvent = <A, B> (mapFn: Fn<A, B>, element: React$Element<*>) => {
   })
 }
 
-// TODO remove any
+export type FunDefHelpers = {
+  event: <A, B> (type: TypedCtor<mixed>, transform?: Fn<A, B>) => Function,
+  link: (element: React$Element<*>) => React$Element<*>,
+  map: MapReactElement,
+  interactions: Object
+}
+
+export type CycleDef
+  = Observable<React$Element<*>>
+  | { view: Observable<React$Element<*>>
+    , events?: { [key: string]: Observable<React$Element<*>> } }
+
+export type FunDefFn = (
+  fun: FunDefHelpers,
+  props: Object,
+  self: Object,
+  lifecycles: Object
+) => CycleDef
+
 export const component =
-  (componentName: string, defFn: any, componentOptions: any) =>
+  (componentName: string, defFn: FunDefFn, componentOptions?: Object) =>
 {
   // binding context
   const map = mapEvent
@@ -68,14 +91,14 @@ export const component =
     // binding API
     linkEvent.map = mapAndLinkEvent
 
-    const fun = {
+    const funDefHelpers = {
       event,
       link: linkEvent,
       map,
       interactions, // cycle compatible
     }
 
-    const cycleDef = defFn(fun, props, self, lifecycles)
+    const cycleDef = defFn(funDefHelpers, props, self, lifecycles)
     const {view, events: cycleEvents} = cycleDef.view
       ? cycleDef
       : {view: cycleDef, events: {}}
