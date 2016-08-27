@@ -4,7 +4,7 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import {
   createTypes,
-  createSimpleUpdate,
+  caseOf,
   component,
   createProgram,
   fromSimpleInit,
@@ -28,7 +28,7 @@ const Msg = createTypes(
 )
 
 // 3. define update function (the reducer)
-const update = createSimpleUpdate({
+const update = caseOf({
   InputChange: (event: Object, model) => ({
     ...model,
     currentInputText: trace(event.target.value)

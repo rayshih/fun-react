@@ -5,7 +5,7 @@ import ReactDOM from 'react-dom'
 import {Observable} from 'rx'
 import {
   createTypes,
-  createUpdate,
+  caseOf,
   component,
   createProgram,
 } from '../../src'
@@ -38,7 +38,7 @@ const init = topic => [
   [getRandomGif(topic)]
 ]
 
-const update = createUpdate({
+const update = caseOf({
   MorePlease: (event, model) =>
     [model, getRandomGif(model.topic)],
 

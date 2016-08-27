@@ -4,12 +4,10 @@ import React from 'react'
 import {Observable, Subject} from 'rx'
 import {component} from './component'
 
-import {caseOf} from './type-system'
 import type {Typed, MapFn, MapFnMap} from './type-system'
 
 // ----- main functions ------
 export type UpdateFn<M, R> = MapFn<Typed<any>, M, R>
-export type UpdateFnMap<M, R> = MapFnMap<Typed<any>, M, R>
 export type Reaction<M> = [M, Array<Observable>]
 
 export type ProgramParam<M> = {
@@ -43,22 +41,6 @@ export const createProgram = <M> ({
 })
 
 // ----- update function helper ------
-export const createSimpleUpdate = <M> (
-  updateMap: UpdateFnMap<M, M>,
-  otherwise?: UpdateFn<M, M>
-): UpdateFn<M, M> => {
-  otherwise = otherwise || ((_, model) => model)
-  return caseOf(updateMap, otherwise)
-}
-
-export const createUpdate = <M> (
-  updateMap: UpdateFnMap<M, Reaction<M>>,
-  otherwise?: UpdateFn<M, Reaction<M>>
-): UpdateFn<M, Reaction<M>> => {
-  otherwise = otherwise || ((_, model) => [model, []])
-  return caseOf(updateMap, otherwise)
-}
-
 export const fromSimpleInit = <M> (model: M): Reaction<M> => [model, []]
 export const fromSimpleUpdate = <M, R> (
   update: UpdateFn<M, M>
