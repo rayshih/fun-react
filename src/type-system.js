@@ -16,8 +16,9 @@ export const createTypes = (...typeNames) => {
     return new Proxy(types, {
       get(target, name) {
         if (typeof target[name] === 'undefined') {
-          throw new Error(`${name} is not defined`)
+          throw new Error(`Type ${name} is not defined`)
         }
+
         return target[name]
       }
     })

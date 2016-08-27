@@ -79,3 +79,8 @@ TODO explain what is Functor, and why can react element be a functor
 - implement HTML.program
 	- side effect (CMD) and subscription
 - implement `html`
+
+## Contributers
+
+- rayshih: that's me
+- wuct: <github.com/wuct>
