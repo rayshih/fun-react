@@ -1,7 +1,11 @@
+// @flow
+
 import React from 'react'
 import Cycle from 'cycle-react'
 import {Subject} from 'rx'
 import {id} from './util'
+
+import type {Fn} from './type-system'
 
 const Mapper = Cycle.component('Mapper', (interactions, props) => {
   const mapFn$ = props.get('mapFn')
@@ -20,7 +24,7 @@ const Mapper = Cycle.component('Mapper', (interactions, props) => {
   }
 })
 
-export const mapEvent = (mapFn, element) => {
+export const mapEvent = <A, B> (mapFn: Fn<A, B>, element: React$Element<*>) => {
   return React.createElement(Mapper, {
     key: element.key,
     mapFn,
@@ -28,8 +32,9 @@ export const mapEvent = (mapFn, element) => {
   })
 }
 
+// TODO remove any
 export const component =
-  (componentName, defFn, componentOptions) =>
+  (componentName: string, defFn: any, componentOptions: any) =>
 {
   // binding context
   const map = mapEvent

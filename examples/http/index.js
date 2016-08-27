@@ -1,3 +1,5 @@
+// @flow
+
 import React from 'react'
 import ReactDOM from 'react-dom'
 import {Observable} from 'rx'
@@ -37,13 +39,13 @@ const init = topic => [
 ]
 
 const update = createUpdate({
-  [Msg.MorePlease]: (event, model) =>
+  MorePlease: (event, model) =>
     [model, getRandomGif(model.topic)],
 
-  [Msg.FetchSucceed]: (newUrl, model) =>
+  FetchSucceed: (newUrl, model) =>
     [{...model, gifUrl: newUrl}, []],
 
-  [Msg.FetchFail]: (event, model) =>
+  FetchFail: (event, model) =>
     [model, []],
 })
 

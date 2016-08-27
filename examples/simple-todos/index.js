@@ -1,8 +1,10 @@
+// @flow
+
 import React from 'react'
 import ReactDOM from 'react-dom'
 import {
   createTypes,
-  createUpdate,
+  createSimpleUpdate,
   component,
   createProgram,
   fromSimpleInit,
@@ -10,8 +12,21 @@ import {
   trace,
 } from '../../src'
 
+import type {UpdateFnMap} from '../../src'
+
+type TodoItem = {
+  id: number,
+  title: string
+}
+
+type Model = {
+  currentInputText: string,
+  seq: number,
+  todos: Array<TodoItem>
+}
+
 // 1. define your init model
-const init = {
+const init: Model = {
   currentInputText: '', // input state
   seq: 0,               // sequential id
   todos: []             // no todo item initially
@@ -26,13 +41,13 @@ const Msg = createTypes(
 )
 
 // 3. define update function (the reducer)
-const update = createUpdate({
-  [Msg.InputChange]: (event, model) => ({
+const update = createSimpleUpdate({
+  InputChange: (event: Object, model: Model) => ({
     ...model,
     currentInputText: trace(event.target.value)
   }),
 
-  [Msg.Add]: (_, model) => ({
+  Add: (_, model: Model) => ({
     ...model,
     currentInputText: '',
     seq: model.seq + 1,
