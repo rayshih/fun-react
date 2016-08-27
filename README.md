@@ -83,4 +83,4 @@ TODO explain what is Functor, and why can react element be a functor
 ## Contributers
 
 - rayshih: that's me
-- wuct: <github.com/wuct>
+- wuct: <https://github.com/wuct>
