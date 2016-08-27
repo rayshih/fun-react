@@ -1,5 +1,5 @@
-export const createTypes = (...typeNames) => (
-  typeNames.reduce((r, n) => {
+export const createTypes = (...typeNames) => {
+  const types = typeNames.reduce((r, n) => {
     const ctor = payload => ({
       type: n,
       payload
@@ -11,7 +11,21 @@ export const createTypes = (...typeNames) => (
     r[n] = ctor
     return r
   }, {})
-)
+
+  if (process.env.NODE_ENV !== 'production') {
+    return new Proxy(types, {
+      get(target, name) {
+        if (typeof target[name] === 'undefined') {
+          throw new Error(`${name} is not defined`)
+        }
+        return target[name]
+      }
+    })
+  }
+
+  return types
+}
+
 
 export const caseOf = fnMap => (obj, ...rest) => {
   const otherwise = fnMap._otherwise
