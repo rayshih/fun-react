@@ -4,7 +4,7 @@ import React from 'react'
 import {Observable, Subject} from 'rx'
 import {component} from './component'
 
-import type {Typed, MapFn, MapFnMap} from './type-system'
+import type {Typed, MapFn} from './type-system'
 
 // ----- main functions ------
 export type UpdateFn<M, R> = MapFn<Typed<any>, M, R>

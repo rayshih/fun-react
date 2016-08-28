@@ -26,8 +26,8 @@ const Mapper = Cycle.component('Mapper', (interactions, props) => {
 
 export type MapReactElement = (
   mapFn: Fn<any, any>,
-  element: React$Element<*>
-) => React$Element<*>
+  element: React.Element<*>
+) => React.Element<*>
 
 export const mapEvent: MapReactElement = (mapFn, element) => {
   return React.createElement(Mapper, {
@@ -38,16 +38,16 @@ export const mapEvent: MapReactElement = (mapFn, element) => {
 }
 
 export type FunDefHelpers = {
-  event: <A, B> (type: TypedCtor<mixed>, transform?: Fn<A, B>) => Function,
-  link: (element: React$Element<*>) => React$Element<*>,
+  event: (type: TypedCtor<mixed>, transform?: Fn<any, any>) => Function,
+  link: (element: React.Element<*>) => React.Element<*>,
   map: MapReactElement,
   interactions: Object
 }
 
 export type CycleDef
-  = Observable<React$Element<*>>
-  | { view: Observable<React$Element<*>>
-    , events?: { [key: string]: Observable<React$Element<*>> } }
+  = Observable<React.Element<*>>
+  | { view: Observable<React.Element<*>>
+    , events?: { [key: string]: Observable<React.Element<*>> } }
 
 export type FunDefFn = (
   fun: FunDefHelpers,

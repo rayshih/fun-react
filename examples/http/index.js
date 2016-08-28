@@ -40,7 +40,7 @@ const init = topic => [
 
 const update = caseOf({
   MorePlease: (event, model) =>
-    [model, getRandomGif(model.topic)],
+    [model, [getRandomGif(model.topic)]],
 
   FetchSucceed: (newUrl, model) =>
     [{...model, gifUrl: newUrl}, []],
