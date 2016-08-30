@@ -1,14 +1,27 @@
+// @flow
+
 import React from 'react'
 import {Observable, Subject} from 'rx'
 import {component} from './component'
 
+import type {Typed, MapFn} from './type-system'
+
 // ----- main functions ------
-export const createProgram = ({
+export type UpdateFn<M, R> = MapFn<Typed<any>, M, R>
+export type Reaction<M> = [M, Array<Observable>]
+
+export type ProgramParam<M> = {
+  init: Reaction<M>,
+  update: UpdateFn<M, Reaction<M>>,
+  view: ReactClass<*>
+}
+
+export const createProgram = <M> ({
   init,
   update,
   view,
   // inputs, // TODO
-}) => component('Program', () => {
+}: ProgramParam<M>) => component('Program', () => {
   const rootEvent$ = new Subject()
   const handleEvent = msg => rootEvent$.onNext(msg)
 
@@ -27,8 +40,14 @@ export const createProgram = ({
   ))
 })
 
-export const fromSimpleInit = model => [model, []]
-export const fromSimpleUpdate = update => (msg, model) => [
-  update(msg, model),
-  []
-]
+// ----- update function helper ------
+export const fromSimpleInit = <M> (model: M): Reaction<M> => [model, []]
+export const fromSimpleUpdate = <M, R> (
+  update: UpdateFn<M, M>
+): UpdateFn<M, Reaction<M>> => (
+  (msg: Typed<any>, model: M) => [
+    update(msg, model),
+    []
+  ]
+)
+

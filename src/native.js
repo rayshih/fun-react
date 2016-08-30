@@ -1,2 +1,4 @@
-// TODO remove this file later
+// @flow
+
+// TODO handle native View
 export * from './index'

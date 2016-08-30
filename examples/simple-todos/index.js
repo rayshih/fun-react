@@ -1,8 +1,10 @@
+// @flow
+
 import React from 'react'
 import ReactDOM from 'react-dom'
 import {
   createTypes,
-  createUpdate,
+  caseOf,
   component,
   createProgram,
   fromSimpleInit,
@@ -26,13 +28,13 @@ const Msg = createTypes(
 )
 
 // 3. define update function (the reducer)
-const update = createUpdate({
-  [Msg.InputChange]: (event, model) => ({
+const update = caseOf({
+  InputChange: (event: Object, model) => ({
     ...model,
     currentInputText: trace(event.target.value)
   }),
 
-  [Msg.Add]: (_, model) => ({
+  Add: (_, model) => ({
     ...model,
     currentInputText: '',
     seq: model.seq + 1,

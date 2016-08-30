@@ -1,9 +1,11 @@
+// @flow
+
 import React from 'react'
 import ReactDOM from 'react-dom'
 import {Observable} from 'rx'
 import {
   createTypes,
-  createUpdate,
+  caseOf,
   component,
   createProgram,
 } from '../../src'
@@ -36,14 +38,14 @@ const init = topic => [
   [getRandomGif(topic)]
 ]
 
-const update = createUpdate({
-  [Msg.MorePlease]: (event, model) =>
-    [model, getRandomGif(model.topic)],
+const update = caseOf({
+  MorePlease: (event, model) =>
+    [model, [getRandomGif(model.topic)]],
 
-  [Msg.FetchSucceed]: (newUrl, model) =>
+  FetchSucceed: (newUrl, model) =>
     [{...model, gifUrl: newUrl}, []],
 
-  [Msg.FetchFail]: (event, model) =>
+  FetchFail: (event, model) =>
     [model, []],
 })
 

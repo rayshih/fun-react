@@ -1,7 +1,8 @@
 {
   "parser": "babel-eslint",
   "plugins": [
-    "react"
+    "react",
+    "flowtype"
   ],
   "parserOptions": {
     "ecmaFeatures": {
@@ -13,13 +14,18 @@
     "require": false,
     "__dirname": false,
     "document": false,
-    "fetch": false
+    "process": false,
+    "fetch": false,
+    "Proxy": false
   },
   "rules": {
     "semi": ["warn", "never"],
     "no-unused-vars": "warn",
     "no-undef": "error",
+
     "react/jsx-uses-react": "error",
-    "react/jsx-uses-vars": "error"
+    "react/jsx-uses-vars": "error",
+
+    "flowtype/define-flow-type": "warn"
   }
 }
