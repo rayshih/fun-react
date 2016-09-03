@@ -9,6 +9,7 @@ import type {Typed, MapFn} from './type-system'
 // ----- main functions ------
 export type UpdateFn<M, R> = MapFn<Typed<any>, M, R>
 export type Reaction<M> = [M, Array<Observable>]
+export type UpdateFnR<M> = UpdateFn<M, Reaction<M>> // UpdateFn with Reaction
 
 export type ProgramParam<M> = {
   init: Reaction<M>,

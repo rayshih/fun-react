@@ -10,6 +10,13 @@ import {
   createProgram,
 } from '../../src'
 
+import type {UpdateFnR, Reaction} from '../../src'
+
+type Model = {
+  topic: string,
+  gifUrl: string
+}
+
 /**
  * This is an example ported from http://elm-lang.org/examples/http
  */
@@ -30,7 +37,7 @@ const getRandomGif = topic => {
   .map(Msg.FetchSucceed)
 }
 
-const init = topic => [
+const init = (topic): Reaction<Model> => [
   {
     topic,
     gifUrl: "waiting.gif"
@@ -38,7 +45,9 @@ const init = topic => [
   [getRandomGif(topic)]
 ]
 
-const update = caseOf({
+const update
+: UpdateFnR<Model>
+= caseOf({
   MorePlease: (event, model) =>
     [model, [getRandomGif(model.topic)]],
 

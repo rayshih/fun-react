@@ -37,7 +37,7 @@ export const createTypes = (...typeNames: Array<string>): TypedCtorMap => {
 
 
 export type MapFn<A, B, C> = (obj: A, extra: B) => C
-export type MapFnMap<A, B, C> = { [key: string]: MapFn<A, B, C> }
+export type MapFnMap<A, B, C> = {[key: string]: MapFn<A, B, C>}
 
 export const caseOf = <P, B, C>
   (
