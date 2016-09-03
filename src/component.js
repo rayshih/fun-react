@@ -98,6 +98,12 @@ export const component =
       interactions, // cycle compatible
     }
 
+    // enhance props interface
+    props.select = (...fields) => {
+      const obs = fields.map(f => props.get(f))
+      return Observable.combineLatest(...obs)
+    }
+
     const cycleDef = defFn(funDefHelpers, props, self, lifecycles)
     const {view, events: cycleEvents} = cycleDef.view
       ? cycleDef
@@ -116,12 +122,14 @@ export const component =
     event$.subscribe(dispatchToOrdinaryReactInterface)
 
     // dispatch to fun react interface
-    Object.keys(cycleEvents).forEach(type => {
-      const obs$ = cycleEvents[type]
-      obs$.subscribe(payload => {
-        sendEvent({type, payload})
+    if (cycleEvents) {
+      Object.keys(cycleEvents).forEach(type => {
+        const obs$ = cycleEvents[type]
+        obs$.subscribe(payload => {
+          sendEvent({type, payload})
+        })
       })
-    })
+    }
 
     return {
       view,

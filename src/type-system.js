@@ -1,5 +1,7 @@
 // @flow
 
+import {DEV_MODE} from './config'
+
 export type Typed<P> = { type: string, payload: P }
 export type TypedCtor<P> = (payload: P) => Typed<P>
 export type TypedCtorMap = { [key: string]: TypedCtor<mixed> }
@@ -18,7 +20,7 @@ export const createTypes = (...typeNames: Array<string>): TypedCtorMap => {
     return r
   }, {})
 
-  if (process.env.NODE_ENV !== 'production') {
+  if (DEV_MODE && global.Proxy) {
     return new Proxy(types, {
       get(target, name) {
         if (typeof target[name] === 'undefined') {
