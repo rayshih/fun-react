@@ -1,5 +1,11 @@
 # Change Log
 
+## v0.1.3
+
+2016-09-03
+
+- add @flow to index.js
+
 ## v0.1.2
 
 2016-09-03
