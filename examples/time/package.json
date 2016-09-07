@@ -1,7 +1,7 @@
 {
-  "name": "fun-react-simple-todo-example",
+  "name": "fun-react-time-example",
   "version": "1.0.0",
-  "description": "Fun React simple todolist example",
+  "description": "Fun React time example",
   "scripts": {
     "start": "webpack-dev-server -d --inline --hot",
     "test": "echo \"Error: no test specified\" && exit 1"

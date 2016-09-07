@@ -14,30 +14,43 @@ export type UpdateFnR<M> = UpdateFn<M, Reaction<M>> // UpdateFn with Reaction
 export type ProgramParam<M> = {
   init: Reaction<M>,
   update: UpdateFn<M, Reaction<M>>,
-  view: ReactClass<*>
+  view: ReactClass<*>,
+  inputs: (model: M) => [Array<Observable>]
 }
 
 export const createProgram = <M> ({
   init,
   update,
   view,
-  // inputs, // TODO
+  inputs,
 }: ProgramParam<M>) => component('Program', () => {
   const rootEvent$ = new Subject()
-  const handleEvent = msg => rootEvent$.onNext(msg)
+  const dispatchMsg = msg => rootEvent$.onNext(msg)
 
+  // update
   const update$ = Observable.just(init).concat(rootEvent$)
   .scan(([model], msg) => update(msg, model))
   .shareReplay(1)
 
+  // model update
   const model$ = update$.map(([model]) => model)
+
+  // side effect triggered by msg
   const effect$ = update$
   .flatMap(([, effects]) => Observable.merge(effects))
 
-  effect$.subscribe(handleEvent)
+  // inputs: global side effect, a.k.a subscription
+  const input$ = model$.switchMap(model => {
+    const obsList = inputs(model)
+    return Observable.merge(obsList)
+  })
+
+  effect$
+  .merge(input$)
+  .subscribe(dispatchMsg)
 
   return model$.map(model => React.createElement(
-    view, {model, onEvent: handleEvent}
+    view, {model, onEvent: dispatchMsg}
   ))
 })
 

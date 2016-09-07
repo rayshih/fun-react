@@ -1,5 +1,12 @@
 # Change Log
 
+## v0.2.0
+
+2016-09-07
+
+- implement inputs(subscription)
+- add `UpdateFnR<M>` type, which equals to `UpdateFn<M, Reaction<M>>`
+
 ## v0.1.3
 
 2016-09-03
