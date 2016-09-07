@@ -66,7 +66,8 @@ const rootEl = document.getElementById('app')
 const Program = createProgram({
   init: fromSimpleInit(init),
   update: fromSimpleUpdate(update),
-  view: SimpleTodoList
+  view: SimpleTodoList,
+  inputs: () => []
 })
 
 ReactDOM.render(<Program />, rootEl)

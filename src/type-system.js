@@ -55,7 +55,7 @@ export const caseOf = <P, B, C>
       return otherwise(obj, extra)
     }
 
-    throw new Error('obj type not handled with type' + obj.type)
+    throw new Error('obj type not handled with type: ' + obj.type)
 
   }
 

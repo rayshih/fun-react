@@ -16,7 +16,8 @@
     "document": false,
     "process": false,
     "fetch": false,
-    "Proxy": false
+    "Proxy": false,
+    "global": false
   },
   "rules": {
     "semi": ["warn", "never"],

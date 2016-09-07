@@ -74,7 +74,8 @@ const rootEl = document.getElementById('app')
 const Program = createProgram({
   init: init('cats'),
   update,
-  view: HttpExample
+  view: HttpExample,
+  inputs: () => []
 })
 
 ReactDOM.render(<Program />, rootEl)
