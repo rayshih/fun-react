@@ -61,7 +61,7 @@ import {
   createTypes,
   caseOf,
   createView
-} from '../../src'
+} from 'fun-react'
 
 // 1. define message types by function createTypes
 const Msg = createTypes('INC', 'DEC')
