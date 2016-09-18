@@ -6,6 +6,7 @@
 
 - implement `createView` (simplier view definition)
 - port counter example
+- fix trace function
 
 ## v0.2.0
 

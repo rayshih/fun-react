@@ -99,9 +99,19 @@ ReactDOM.render(<Program />, rootEl)
 
 ### Nested counter
 
+TODO
+
 ### Use with vanilla React
 
+TODO
+
+### Use with flowtype
+
+TODO
+
 ### Learn more
+
+TODO
 
 ## Philosophy
 
