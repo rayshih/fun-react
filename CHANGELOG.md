@@ -1,5 +1,12 @@
 # Change Log
 
+## v0.3.0
+
+2016-09-18
+
+- implement `createView` (simplier view definition)
+- port counter example
+
 ## v0.2.0
 
 2016-09-07

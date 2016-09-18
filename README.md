@@ -4,6 +4,10 @@
 
 Fun React is a React framework.
 
+## Why?
+
+Because I love functional programming and ELM, but I can only use JS in work.
+
 ## Introduction
 
 ### If you know ELM:
@@ -47,6 +51,52 @@ then open `http://localhost:8080` in browser.
 
 ### Basic counter
 
+```javascript
+import React from 'react'
+import ReactDOM from 'react-dom'
+import {
+  createProgram,
+  fromSimpleInit,
+  fromSimpleUpdate,
+  createTypes,
+  caseOf,
+  createView
+} from '../../src'
+
+// 1. define message types by using function createTypes
+const Msg = createTypes('INC', 'DEC')
+
+// 2. define init data
+const init = 0
+
+// 3. define update function
+const update = caseOf({
+  INC: (_, count) => count + 1,
+  DEC: (_, count) => count - 1
+})
+
+// 4. define view by using function createView
+const Counter = createView('Counter', ({model}, {event}) => (
+  <div>
+    <h1>Count: {model}</h1>
+    <button onClick={event(Msg.INC)}>INC</button>
+    <button onClick={event(Msg.DEC)}>DEC</button>
+  </div>
+))
+
+// 5. compose program by the defined `init`, `update`, `view`
+const Program = createProgram({
+  init: fromSimpleInit(init),
+  update: fromSimpleUpdate(update),
+  view: Counter,
+  inputs: () => []
+})
+
+// 6. mount the Program to actual DOM
+const rootEl = document.getElementById('app')
+ReactDOM.render(<Program />, rootEl)
+```
+
 ### Nested counter
 
 ### Use with vanilla React
@@ -65,7 +115,6 @@ TODO explain what is Functor, and why can react element be a functor
 ## TODO
 
 - restructure examples
-	- counter
 	- nested counter
 	- todo list
 	- cycle interoperable
