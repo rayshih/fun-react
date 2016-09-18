@@ -6,7 +6,7 @@ import {Observable} from 'rx'
 import {
   createTypes,
   caseOf,
-  component,
+  createView,
   createProgram,
   fromSimpleInit,
   fromSimpleUpdate,
@@ -22,13 +22,11 @@ const update = caseOf({
 })
 
 // 4. define view
-const Time = component('Time', ({event}, props) => {
-  return props.get('model').map(model => (
-    <div>
-      {model.toString()}
-    </div>
-  ))
-})
+const Time = createView('Time', ({model}) => (
+  <div>
+    {model.toString()}
+  </div>
+))
 
 const rootEl = document.getElementById('app')
 

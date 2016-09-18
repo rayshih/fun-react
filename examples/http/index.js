@@ -6,7 +6,7 @@ import {Observable} from 'rx'
 import {
   createTypes,
   caseOf,
-  component,
+  createView,
   createProgram,
 } from '../../src'
 
@@ -58,16 +58,14 @@ const update
     [model, []],
 })
 
-const HttpExample = component('HttpExample', ({event}, props) => {
-  return props.get('model').map(model => (
-    <div>
-      <h2>{model.topic}</h2>
-      <button onClick={event(Msg.MorePlease)}>More Please!</button>
-      <br />
-      <img src={model.gifUrl} />
-    </div>
-  ))
-})
+const HttpExample = createView('HttpExample', ({model}, {event}) => (
+  <div>
+    <h2>{model.topic}</h2>
+    <button onClick={event(Msg.MorePlease)}>More Please!</button>
+    <br />
+    <img src={model.gifUrl} />
+  </div>
+))
 
 const rootEl = document.getElementById('app')
 

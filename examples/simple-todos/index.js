@@ -5,7 +5,7 @@ import ReactDOM from 'react-dom'
 import {
   createTypes,
   caseOf,
-  component,
+  createView,
   createProgram,
   fromSimpleInit,
   fromSimpleUpdate,
@@ -45,21 +45,19 @@ const update = caseOf({
 })
 
 // 4. define view
-const SimpleTodoList = component('SimpleTodoList', ({event}, props) => {
-  return props.get('model').map(model => (
-    <div>
-      {
-        trace(model).todos.map(item => (
-          <div key={item.id}>
-            {item.id}: {item.title}
-          </div>
-        ))
-      }
-      <input value={model.currentInputText} onChange={event(Msg.InputChange)} />
-      <button onClick={event(Msg.Add)}>Add</button>
-    </div>
-  ))
-})
+const SimpleTodoList = createView('SimpleTodoList', ({model}, {event}) => (
+  <div>
+    {
+      trace(model).todos.map(item => (
+        <div key={item.id}>
+          {item.id}: {item.title}
+        </div>
+      ))
+    }
+    <input value={model.currentInputText} onChange={event(Msg.InputChange)} />
+    <button onClick={event(Msg.Add)}>Add</button>
+  </div>
+))
 
 const rootEl = document.getElementById('app')
 
