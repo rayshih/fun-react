@@ -63,7 +63,7 @@ import {
   createView
 } from '../../src'
 
-// 1. define message types by using function createTypes
+// 1. define message types by function createTypes
 const Msg = createTypes('INC', 'DEC')
 
 // 2. define init data
@@ -75,7 +75,7 @@ const update = caseOf({
   DEC: (_, count) => count - 1
 })
 
-// 4. define view by using function createView
+// 4. define view by function createView
 const Counter = createView('Counter', ({model}, {event}) => (
   <div>
     <h1>Count: {model}</h1>
