@@ -31,7 +31,7 @@ const Msg = createTypes(
 const update = caseOf({
   InputChange: (event: Object, model) => ({
     ...model,
-    currentInputText: trace(event.target.value)
+    currentInputText: trace(event.target.value, event.target.value)
   }),
 
   Add: (_, model) => ({
@@ -48,7 +48,7 @@ const update = caseOf({
 const SimpleTodoList = createView('SimpleTodoList', ({model}, {event}) => (
   <div>
     {
-      trace(model).todos.map(item => (
+      trace(model, model).todos.map(item => (
         <div key={item.id}>
           {item.id}: {item.title}
         </div>
