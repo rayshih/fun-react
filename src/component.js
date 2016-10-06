@@ -30,11 +30,13 @@ export type MapReactElement = (
 ) => React.Element<*>
 
 export const mapEvent: MapReactElement = (mapFn, element) => {
-  return React.createElement(Mapper, {
-    key: element.key,
+  const config = {
     mapFn,
     element
-  })
+  }
+
+  const {key} = element
+  return React.createElement(Mapper, key ? { ...config, key } : config )
 }
 
 export type FunDefHelpers = {
