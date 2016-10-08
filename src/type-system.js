@@ -6,6 +6,8 @@ export type Typed<P> = { type: string, payload: P }
 export type TypedCtor<P> = (payload: P) => Typed<P>
 export type TypedCtorMap = { [key: string]: TypedCtor<mixed> }
 
+const isProxySupported = typeof Proxy === 'function'
+
 export const createTypes = (...typeNames: Array<string>): TypedCtorMap => {
   const types = typeNames.reduce((r, n) => {
     const ctor = payload => ({
@@ -20,7 +22,7 @@ export const createTypes = (...typeNames: Array<string>): TypedCtorMap => {
     return r
   }, {})
 
-  if (DEV_MODE && global.Proxy) {
+  if (DEV_MODE && isProxySupported) {
     return new Proxy(types, {
       get(target, name) {
         if (typeof target[name] === 'undefined') {
