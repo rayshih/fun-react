@@ -10,7 +10,7 @@ const shallowCompare = (a: Object, b: Object) => {
   const bKeys = Object.keys(b)
   if (aKeys.length !== bKeys.length) return false
 
-  for (let k of aKeys) {
+  for (const k of aKeys) {
     const va = a[k]
     const vb = b[k]
     if (va !== vb) return false
