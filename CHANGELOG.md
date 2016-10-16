@@ -2,6 +2,16 @@
 
 ## v0.3.0
 
+2016-10-16
+
+- refactor shallow compare to prevent unsupport Symbol problem in react native
+
+2016-10-7
+
+- fix null react key expose problem
+- migrate counter-pair example
+
+
 2016-09-18
 
 - implement `createView` (simplier view definition)

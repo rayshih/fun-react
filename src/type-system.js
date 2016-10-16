@@ -20,7 +20,7 @@ export const createTypes = (...typeNames: Array<string>): TypedCtorMap => {
     return r
   }, {})
 
-  if (DEV_MODE && global.Proxy) {
+  if (DEV_MODE && typeof Proxy === 'function') {
     return new Proxy(types, {
       get(target, name) {
         if (typeof target[name] === 'undefined') {
