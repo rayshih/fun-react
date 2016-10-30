@@ -6,8 +6,12 @@ import {
   createProgram,
   fromSimpleInit,
   fromSimpleUpdate,
-  createView
+  createView,
+  config
 } from '../../src'
+
+config.logViewRender = true
+config.logEvents = true
 
 import Counter, {init, update} from './Counter'
 

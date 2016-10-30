@@ -5,6 +5,7 @@ import {Observable, Subject} from 'rx'
 import {component} from './component'
 
 import type {Typed, MapFn} from './type-system'
+import {DEV_MODE, log as logConfig} from './config'
 
 // ----- main functions ------
 export type UpdateFn<M, R> = MapFn<Typed<any>, M, R>
@@ -25,7 +26,10 @@ export const createProgram = <M> ({
   inputs,
 }: ProgramParam<M>) => component('Program', () => {
   const rootEvent$ = new Subject()
-  const dispatchMsg = msg => rootEvent$.onNext(msg)
+  const dispatchMsg = msg => {
+    if (DEV_MODE && logConfig.logEvents) console.log(msg)
+    rootEvent$.onNext(msg)
+  }
 
   // update
   const update$ = Observable.just(init).concat(rootEvent$)
@@ -37,7 +41,7 @@ export const createProgram = <M> ({
 
   // side effect triggered by msg
   const effect$ = update$
-  .flatMap(([, effects]) => Observable.merge(effects))
+  .flatMap(([, effects]) => Observable.merge(effects).delay(10))
 
   // inputs: global side effect, a.k.a subscription
   const input$ = model$.switchMap(model => {

@@ -4,6 +4,7 @@ import React from 'react'
 import Cycle from 'cycle-react'
 import {Subject, Observable} from 'rx'
 import {id} from './util'
+import {log as logConfig, DEV_MODE} from './config'
 
 import type {Fn, TypedCtor} from './type-system'
 
@@ -134,7 +135,13 @@ export const component =
     }
 
     return {
-      view,
+      view: (
+        DEV_MODE
+          ? view.doOnNext(() => {
+              logConfig.logViewRender && console.log(`render ${componentName}`)
+            })
+          : view
+      ),
       events: {
         onEvent: event$
       }

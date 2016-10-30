@@ -1,5 +1,12 @@
 # Change Log
 
+## v0.3.2
+
+2016-10-30
+
+- fix race condition problem
+- add `logViewRender` and `logEvents` config to help debug and performance tuning
+
 ## v0.3.0
 
 2016-10-16

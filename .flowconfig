@@ -1,5 +1,7 @@
 [ignore]
 
+<PROJECT_ROOT>/examples/ReactNativeDemo/
+
 [include]
 ./node_modules/fbjs/lib
 

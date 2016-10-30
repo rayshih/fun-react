@@ -17,7 +17,8 @@
     "process": false,
     "fetch": false,
     "Proxy": false,
-    "global": false
+    "global": false,
+    "console": false
   },
   "rules": {
     "semi": ["warn", "never"],
