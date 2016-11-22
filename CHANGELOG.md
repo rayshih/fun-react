@@ -1,5 +1,11 @@
 # Change Log
 
+## v0.3.3
+
+2016-11-22
+
+- add rootComponent config
+
 ## v0.3.2
 
 2016-10-30

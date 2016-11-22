@@ -1,7 +1,6 @@
 // @flow
 
-import {log} from './config'
-export const config = log
+export {config} from './config'
 
 export * from './type-system'
 export * from './component'

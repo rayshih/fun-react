@@ -132,6 +132,7 @@ TODO explain what is Functor, and why can react element be a functor
 - write doc
 	- README
 	- API document
+  - the config options
 - add jsbin env
 - add test
 - Try to upgrade to rx 5 or annotate rx 4

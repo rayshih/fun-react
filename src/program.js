@@ -5,7 +5,7 @@ import {Observable, Subject} from 'rx'
 import {component} from './component'
 
 import type {Typed, MapFn} from './type-system'
-import {DEV_MODE, log as logConfig} from './config'
+import {DEV_MODE, config} from './config'
 
 // ----- main functions ------
 export type UpdateFn<M, R> = MapFn<Typed<any>, M, R>
@@ -27,7 +27,7 @@ export const createProgram = <M> ({
 }: ProgramParam<M>) => component('Program', () => {
   const rootEvent$ = new Subject()
   const dispatchMsg = msg => {
-    if (DEV_MODE && logConfig.logEvents) console.log(msg)
+    if (DEV_MODE && config.logEvents) console.log(msg)
     rootEvent$.onNext(msg)
   }
 
@@ -60,7 +60,7 @@ export const createProgram = <M> ({
 
 // ----- update function helper ------
 export const fromSimpleInit = <M> (model: M): Reaction<M> => [model, []]
-export const fromSimpleUpdate = <M, R> (
+export const fromSimpleUpdate = <M> (
   update: UpdateFn<M, M>
 ): UpdateFn<M, Reaction<M>> => (
   (msg: Typed<any>, model: M) => [

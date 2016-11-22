@@ -4,7 +4,7 @@ import React from 'react'
 import Cycle from 'cycle-react'
 import {Subject, Observable} from 'rx'
 import {id} from './util'
-import {log as logConfig, DEV_MODE} from './config'
+import {config, DEV_MODE} from './config'
 
 import type {Fn, TypedCtor} from './type-system'
 
@@ -31,13 +31,13 @@ export type MapReactElement = (
 ) => React.Element<*>
 
 export const mapEvent: MapReactElement = (mapFn, element) => {
-  const config = {
+  const options = {
     mapFn,
     element
   }
 
   const {key} = element
-  return React.createElement(Mapper, key ? { ...config, key } : config )
+  return React.createElement(Mapper, key ? { ...options, key } : options )
 }
 
 export type FunDefHelpers = {
@@ -138,7 +138,7 @@ export const component =
       view: (
         DEV_MODE
           ? view.doOnNext(() => {
-              logConfig.logViewRender && console.log(`render ${componentName}`)
+              config.logViewRender && console.log(`render ${componentName}`)
             })
           : view
       ),
@@ -148,6 +148,13 @@ export const component =
     }
   }
 
-  return Cycle.component(componentName, cycleDefFn, componentOptions)
+  return Cycle.component(
+    componentName,
+    cycleDefFn,
+    {
+      ...(componentOptions || {}),
+      rootTagName: config.rootComponent
+    }
+  )
 }
 
