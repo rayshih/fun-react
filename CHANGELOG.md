@@ -1,5 +1,12 @@
 # Change Log
 
+## v0.3.4
+
+2016-11-27
+
+- fix rootComponent type annotation
+- fix rootComponent application timing problem
+
 ## v0.3.3
 
 2016-11-22
