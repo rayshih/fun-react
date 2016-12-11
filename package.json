@@ -1,6 +1,6 @@
 {
   "name": "fun-react",
-  "version": "0.3.4",
+  "version": "0.3.5",
   "description": "Elm like js framework built on top of cycle-react",
   "author": {
     "name": "Ray Shih",
@@ -35,8 +35,8 @@
     "eslint-plugin-flowtype": "^2.11.4",
     "eslint-plugin-react": "^5.2.2",
     "flow-copy-source": "^1.1.0",
-    "react": "^15.2.1",
-    "react-dom": "^15.2.1",
+    "react": "^15.4.1",
+    "react-dom": "^15.4.1",
     "rx": "^4.1.0",
     "webpack": "^1.13.1",
     "webpack-dev-server": "^1.14.1"

@@ -16,7 +16,7 @@ export type ProgramParam<M> = {
   init: Reaction<M>,
   update: UpdateFn<M, Reaction<M>>,
   view: ReactClass<*>,
-  inputs: (model: M) => [Array<Observable>]
+  inputs: (model: M) => Array<Observable>
 }
 
 export const createProgram = <M> ({

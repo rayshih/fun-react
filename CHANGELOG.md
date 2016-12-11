@@ -1,5 +1,12 @@
 # Change Log
 
+## v0.3.5
+
+2016-12-11
+
+- upgrade npm dependency
+- partially fix flowtype error
+
 ## v0.3.4
 
 2016-11-27
