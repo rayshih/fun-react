@@ -16,7 +16,8 @@ export const createTypes = (...typeNames: Array<string>): TypedCtorMap => {
     })
 
     ctor.typeName = n
-    ctor.toString = () => n
+    const unsafeCtor = (ctor : any)
+    unsafeCtor.toString = () => n
 
     r[n] = ctor
     return r

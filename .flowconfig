@@ -2,12 +2,7 @@
 
 <PROJECT_ROOT>/examples/ReactNativeDemo/
 ./node_modules/flow-copy-source/.*
-
-[include]
-./node_modules/fbjs/lib
-
-[libs]
-./node_modules/fbjs/flow/lib
+.*/node_modules/.*/node_modules/fbjs/.*
 
 [options]
 suppress_type=$FlowIssue
@@ -15,4 +10,4 @@ suppress_type=$FlowFixMe
 suppress_type=$FixMe
 
 [version]
-^0.33.0
+^0.37.0
