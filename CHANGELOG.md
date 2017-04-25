@@ -1,5 +1,11 @@
 # Change Log
 
+## v0.3.8
+
+2017-04-25
+
+- Upgrade flow to 0.40 and fix warning
+
 ## v0.3.7
 
 2017-04-25
