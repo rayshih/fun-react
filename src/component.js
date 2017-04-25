@@ -37,7 +37,8 @@ export const mapEvent: MapReactElement = (mapFn, element) => {
   }
 
   const {key} = element
-  return React.createElement(Mapper, key ? { ...options, key } : options )
+  const newProps = ((key ? { ...options, key } : options) : any)
+  return React.createElement(Mapper, newProps)
 }
 
 export type FunDefHelpers = {
