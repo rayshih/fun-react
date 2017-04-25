@@ -2,7 +2,11 @@
 
 import {any} from 'ramda'
 import {component} from './component'
-import type {FunDefHelpers, CycleDef} from './component'
+import type {
+  FunDefHelpers,
+  CycleDef,
+  ComponentOptions,
+} from './component'
 
 export type RenderFn = (props: Object, fun: FunDefHelpers) => CycleDef
 
@@ -18,9 +22,13 @@ const shallowCompare = (a: Object, b: Object) => {
   }, aKeys)
 }
 
-export const createView = (viewName: string, renderFn: RenderFn) => {
+export const createView = (
+  viewName: string,
+  renderFn: RenderFn,
+  options?: ComponentOptions
+) => {
   return component(viewName, (fun, props$) => {
     return props$.distinctUntilChanged(null, shallowCompare)
       .map(props => renderFn(props, fun))
-  })
+  }, options)
 }

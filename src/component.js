@@ -59,8 +59,13 @@ export type FunDefFn = (
   lifecycles: Object
 ) => CycleDef
 
+export type ComponentOptions = {
+  rootTagName: string | React.Component<*>,
+  propTypes: Object,
+}
+
 export const component =
-  (componentName: string, defFn: FunDefFn, componentOptions?: Object) =>
+  (componentName: string, defFn: FunDefFn, options?: ComponentOptions) =>
 {
   // binding context
   const map = mapEvent
@@ -108,7 +113,7 @@ export const component =
     }
 
     const cycleDef = defFn(funDefHelpers, props, self, lifecycles)
-    const {view: _view, events: cycleEvents} = cycleDef.view
+    const {view, events: cycleEvents} = cycleDef.view
       ? cycleDef
       : {view: cycleDef, events: {}}
 
@@ -134,10 +139,6 @@ export const component =
       })
     }
 
-    // setup rootComponent
-    const rootView = React.createElement(config.rootComponent)
-    const view = _view.startWith(rootView)
-
     return {
       view: (
         DEV_MODE
@@ -155,7 +156,7 @@ export const component =
   return Cycle.component(
     componentName,
     cycleDefFn,
-    componentOptions
+    options
   )
 }
 

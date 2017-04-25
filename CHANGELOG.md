@@ -1,5 +1,11 @@
 # Change Log
 
+## v0.3.7
+
+2017-04-25
+
+- Add ComponentOptions arguments.
+
 ## v0.3.6
 
 2017-03-03

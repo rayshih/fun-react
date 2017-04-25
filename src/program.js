@@ -3,6 +3,7 @@
 import React from 'react'
 import {Observable, Subject} from 'rx'
 import {component} from './component'
+import type {ComponentOptions} from './component'
 
 import type {Typed, MapFn} from './type-system'
 import {DEV_MODE, config} from './config'
@@ -16,7 +17,8 @@ export type ProgramParam<M> = {
   init: Reaction<M>,
   update: UpdateFn<M, Reaction<M>>,
   view: ReactClass<*>,
-  inputs: (model: M) => Array<Observable>
+  inputs: (model: M) => Array<Observable>,
+  options?: ComponentOptions
 }
 
 export const createProgram = <M> ({
@@ -24,6 +26,7 @@ export const createProgram = <M> ({
   update,
   view,
   inputs,
+  options,
 }: ProgramParam<M>) => component('Program', () => {
   const rootEvent$ = new Subject()
   const dispatchMsg = msg => {
@@ -56,7 +59,7 @@ export const createProgram = <M> ({
   return model$.map(model => React.createElement(
     view, {model, onEvent: dispatchMsg}
   ))
-})
+}, options)
 
 // ----- update function helper ------
 export const fromSimpleInit = <M> (model: M): Reaction<M> => [model, []]
