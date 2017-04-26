@@ -1,5 +1,11 @@
 # Change Log
 
+## v0.3.9
+
+2017-04-26
+
+- Fix some flow warning
+
 ## v0.3.8
 
 2017-04-25

@@ -61,8 +61,8 @@ export type FunDefFn = (
 ) => CycleDef
 
 export type ComponentOptions = {
-  rootTagName: string | React.Component<*>,
-  propTypes: Object,
+  rootTagName?: string | React.Component<any, any, any>,
+  propTypes?: Object,
 }
 
 export const component =
